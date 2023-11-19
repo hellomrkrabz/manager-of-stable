@@ -29,16 +29,18 @@ public class DBManager {
                     'id' INTEGER UNIQUE PRIMARY KEY,
             'horse_name' STRING,
                     'age' INTEGER);""";
-            String bal = "INSERT INTO horsies(horse_name, age) VALUES ('balbina', 200);";
-            String bi = "INSERT INTO horsies(horse_name, age) VALUES ('lewandowski', 2);";
-            String nka = "INSERT INTO horsies(horse_name, age) VALUES ('kopytko', 3); ";
+            //String bal = "INSERT INTO horsies(horse_name, age) VALUES ('balbina', 200);";
+            //String bi = "INSERT INTO horsies(horse_name, age) VALUES ('lewandowski', 2);";
+            //String nka = "INSERT INTO horsies(horse_name, age) VALUES ('kopytko', 3); ";
 
             try (Statement stmt = conn.createStatement()) {
                 // create a new table
-                stmt.execute(schema);
-                stmt.execute(bal);
-                stmt.execute(bi);
-                stmt.execute(nka);
+                if (schemaExists = false)
+                {
+                stmt.execute(schema);}
+             //   stmt.execute(bal);
+               // stmt.execute(bi);
+               // stmt.execute(nka);
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
             }
