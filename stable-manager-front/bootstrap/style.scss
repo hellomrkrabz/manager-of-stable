@@ -1,0 +1,143 @@
+@import '../../../../node_modules/bootstrap/scss/functions';
+@import '../../../../node_modules/bootstrap/scss/mixins';
+@import '../../../../node_modules/bootstrap/scss/mixins/buttons';
+@import '../../../../node_modules/bootstrap/scss/variables';
+
+//===================================================================================COLORS=================================================================================
+
+$banana-blue: #21c5bb;
+$banana-blue-dark: #218481;
+
+$mynewcolor: $banana-blue;
+
+//=================================================================================THEMES======================================================================================
+
+//custom banana themes
+$banana-theme-colors: (
+        'banana-blue': $banana-blue,
+);
+
+//merging all color themes together
+$theme-colors: map-merge-multiple($theme-colors, $banana-theme-colors);
+
+//==========================================================================FIXING BOOTSTRAP SHIT==============================================================================
+$grid-row-columns: 8;
+//=============================================================================================================================================================================
+
+//importing bootstrap, I know... very weird place for it but SASS is stupid piece of shit and other things will not work otherwise XD
+@import '../../../../node_modules/bootstrap/scss/bootstrap.scss';
+
+//=================================================================================MIXINS=====================================================================================
+
+.btn-banana-primary {
+  @include button-variant($background: $banana-blue, $border: $banana-blue, $color: $white, $hover-color: $white);
+
+  border-radius: var(--bs-border-radius-sm) !important;
+}
+
+.btn-banana-primary-dark {
+  @include button-variant(
+          $background: $banana-blue-dark,
+          $border: $banana-blue-dark,
+          $color: $white,
+          $hover-color: $white
+  );
+
+  border-radius: var(--bs-border-radius-sm) !important;
+}
+
+.btn-banana-white-outline {
+  @include button-outline-variant(
+          $color: $white,
+          $color-hover: $white,
+          $active-background: tint-color($banana-blue, $btn-active-bg-shade-amount)
+  );
+  margin: 0.25rem;
+  border-radius: var(--bs-border-radius-sm) !important;
+}
+
+//=================================================================================CIRCLE=====================================================================================
+.circle {
+  border-radius: 50%;
+}
+
+//=================================================================================TEXT SHADOWS===============================================================================
+.text-shadow-light {
+  text-shadow: 0px 3px 4px #858585;
+}
+
+//=================================================================================TEXT COLORS===============================================================================
+
+.text-bananablue {
+  color: $banana-blue;
+}
+.text-bananabluedark {
+  color: $banana-blue-dark;
+}
+
+//=================================================================================FRONTPAGE===============================================================================
+
+//Added due to VERI SMOL SIZES PROVIDED BY BOOTSTRAP, I HAD NO CLUE HOW TO DO IT ANOTHER WAY PLEASE DON'T SHOUT OUT ME IF YOU FIND THIS ONE D:
+
+.text-top-logged {
+  font-size: 5.9vw;
+  width: 65vw;
+}
+
+//Same with this one :(
+
+.text-bot-logged {
+  font-size: 3vw;
+  width: 65vw;
+}
+
+.text-top-notlogged {
+  font-size: 4vw;
+}
+
+//Same with this one :(
+
+.text-bot-notlogged {
+  font-size: 2.7vw;
+}
+
+//=================================================================================CUSTOM ANIMATONS===========================================================================
+@keyframes fadeIn {
+  0% {
+    background-color: white;
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+//=================================================================================BOOK COVER=================================================================================
+.book-title {
+  @extend .bg-black;
+  @extend .bg-opacity-50;
+  @extend .text-center;
+  @extend .opacity-0;
+  @extend .text-white;
+
+  position: absolute;
+  height: 200px;
+  width: 130px;
+
+  &:hover {
+    @extend .opacity-100;
+    // animation: fadeIn infinite 1s linear;
+  }
+}
+
+.fidget-spinner {
+  // animation: App-logo-spin infinite 20s linear;
+}
