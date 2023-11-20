@@ -11,6 +11,22 @@ import Button from "react-bootstrap/Button";
 
 
 function Register() {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [username, setUsername] = useState("");
+
+    function submit() {
+        axios.post("http://localhost:8080/api/register", {
+            email: email,
+            password: password,
+            username: username,
+            confirmPassword: confirmPassword
+        }).then((response) => {
+            console.log(response.data.msg);
+        });
+    }
+
     return (
 
         <>
@@ -19,14 +35,13 @@ function Register() {
             </div>
 
             <div className="box-width d-flex flex-column align-items-center mx-auto ">
-                <Logo></Logo>
-                <div className="fs-1 text-center mb-4">Register</div>
+                <div className="fs-1 text-center mb-4 font-test">Register</div>
                 <div className="col align-items-center row gy-2">
-                    <div className={"button"}><TextField className={"button"} id="email" fullWidth label={"Email"} type={'email'}/></div>
-                    <div className={"button"}><TextField className={"button"} id="username" fullWidth label={"Username"} type={'text'}/></div>
-                    <div className={"button"}><TextField className={"button"} id="password" fullWidth label={"Password"} type={'password'}/></div>
-                    <div className={"button"}><TextField className={"button"} id="password_confirm" fullWidth label={"Confirm password"} type={'password'}/></div>
-                    <Button variant="outline-info" className="me-2 mb-5">Register</Button>
+                    <div className={"button"}><TextField className={"button"} id="email" fullWidth label={"Email"} type={'email'} onChange={(e) => { setEmail(e.target.value) }}/></div>
+                    <div className={"button"}><TextField className={"button"} id="username" fullWidth label={"Username"} type={'text'} onChange={(e) => { setUsername(e.target.value) }}/></div>
+                    <div className={"button"}><TextField className={"button"} id="password" fullWidth label={"Password"} type={'password'} onChange={(e) => { setPassword(e.target.value) }}/></div>
+                    <div className={"button"}><TextField className={"button"} id="password_confirm" fullWidth label={"Confirm password"} type={'password'} onChange={(e) => { setConfirmPassword(e.target.value) }}/></div>
+                    <Button variant="outline-info" className="me-2 mb-5" onClick={() => { submit() }} id="submit" name="submit">Register</Button>
                 </div>
             </div>
         </>

@@ -1,5 +1,9 @@
 package dev.dominoot.database;
 
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import java.sql.*;
 
 public class DBManager {
@@ -74,22 +78,16 @@ public class DBManager {
                     'managerId' INTEGER,
                     FOREIGN KEY (managerId) REFERENCES 'users'(id)
             );""";
-            //String bal = "INSERT INTO horsies(horse_name, age) VALUES ('balbina', 200);";
-            //String bi = "INSERT INTO horsies(horse_name, age) VALUES ('lewandowski', 2);";
-            //String nka = "INSERT INTO horsies(horse_name, age) VALUES ('kopytko', 3); ";
 
             try (Statement stmt = conn.createStatement()) {
-                // create a new table
-                //if (schemaExists = false)
-                //{
+                System.out.println(schemaExists);
+                if (schemaExists = false)
+                {
                 stmt.execute(createUserTable);//}
                 stmt.execute(createHorseTable);
                 stmt.execute(createVisitTable);
                 stmt.execute(createCostTable);
-                stmt.execute(createRideTable);
-             //   stmt.execute(bal);
-               // stmt.execute(bi);
-               // stmt.execute(nka);
+                stmt.execute(createRideTable);}
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
             }
@@ -108,4 +106,5 @@ public class DBManager {
             }
         }
     }
+
 }
