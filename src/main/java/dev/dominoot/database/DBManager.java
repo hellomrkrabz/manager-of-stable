@@ -81,13 +81,11 @@ public class DBManager {
 
             try (Statement stmt = conn.createStatement()) {
                 System.out.println(schemaExists);
-                if (schemaExists = false)
-                {
-                stmt.execute(createUserTable);//}
+                stmt.execute(createUserTable);
                 stmt.execute(createHorseTable);
                 stmt.execute(createVisitTable);
                 stmt.execute(createCostTable);
-                stmt.execute(createRideTable);}
+                stmt.execute(createRideTable);
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
             }

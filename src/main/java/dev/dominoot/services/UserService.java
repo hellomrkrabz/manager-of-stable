@@ -8,6 +8,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class })
 @Service
@@ -52,6 +56,55 @@ public class UserService {
                 System.out.println(ex.getMessage());
             }
         }
+    }
+
+    public List<Map<String, Object>> readUsers() {
+        Connection conn = null;
+        List<Map<String, Object>> users = new ArrayList<Map<String, Object>>();
+        try {
+            String url = "jdbc:sqlite:D:/code/manager-of-stable/db/stable.db";
+            conn = DriverManager.getConnection(url);
+            DatabaseMetaData databaseMetaData = conn.getMetaData();
+
+            String readUsers = """
+                    SELECT * FROM users
+            """;
+
+
+            try (Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(readUsers)) {
+                ResultSetMetaData metaData = rs.getMetaData();
+                int columnCount = metaData.getColumnCount();
+
+                while (rs.next()) {
+                    Map<String, Object> user = new HashMap<>();
+
+                    for (int i = 1; i <= columnCount; i++) {
+                        String columnName = metaData.getColumnName(i);
+                        Object columnValue = rs.getObject(i);
+                        user.put(columnName, columnValue);
+                    }
+
+                    users.add(user);}
+            } catch (SQLException e) {
+                // Handle SQLException, log or rethrow as needed
+                e.printStackTrace();
+            }
+            //test
+            System.out.println("Connection to SQLite has been established.");
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        return users;
     }
 
 }
