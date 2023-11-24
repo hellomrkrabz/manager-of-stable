@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import axios from 'axios'
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import Navbar from "../components/navbar";
 import TextField from "@mui/material/TextField"
 import '../App.css'
-import registerStyle from '../Register.css'
+import '../Register.css'
 import Button from "react-bootstrap/Button";
 import '../scripts/Register'
 import { z } from "zod";
@@ -28,9 +28,9 @@ function Register() {
     const [password, setPassword] = useState("");
     const [password_confirmation, setConfirmPassword] = useState("");
     const [username, setUsername] = useState("");
-    const [popupMessage, setPopupMessage] = useState("");
     const [valueOfPopup, setPopup] = useState("");
-    const [open, setOpen] = useState(false);  const closeModal = () => setOpen(false);
+    const [open, setOpen] = useState(false);
+    const closeModal = () => setOpen(false);
 
 
 
@@ -40,6 +40,12 @@ function Register() {
         password_confirmation: password_confirmation,
         email: email
     }
+
+    useEffect(() => {
+        // This effect will run whenever valueOfPopup changes
+        // It can be used to trigger any side effects or additional logic
+        console.log('valueOfPopup changed:', valueOfPopup);
+    }, [valueOfPopup]);
 
     function submit() {
         axios.post("http://localhost:8080/api/register", {
@@ -60,8 +66,15 @@ function Register() {
         catch (err) {
             if (err instanceof z.ZodError) {
                 console.log(err.issues);
-                setOpen(o => !o);
-                setPopup(err.issues);
+
+                // let mes = "";
+                // err.issues.forEach((error)=> {
+                //     mes += error.message;
+                // });
+                let mes = err.issues.map((error) => error.message).join("\n");
+                console.log(mes);
+                setPopup(mes);
+                setOpen(true);
             }
         }
     }
@@ -81,7 +94,15 @@ function Register() {
                     <div className={"button"}><TextField className={"button"} id="password" fullWidth label={"Password"} type={'password'} onChange={(e) => { setPassword(e.target.value) }}/></div>
                     <div className={"button"}><TextField className={"button"} id="password_confirmation" fullWidth label={"Confirm password"} type={'password'} onChange={(e) => { setConfirmPassword(e.target.value) }}/></div>
                     <Button variant="outline-info" className="me-2 mb-5" onClick={() => { validate() }} id="submit" name="submit">Register</Button>
-                    <Popup open={open} closeOnDocumentClick onClose={closeModal}><div className="modal"><a className="close" onClick={closeModal}>&times; value={valueOfPopup}</a></div></Popup>
+                    <Popup open={open} closeOnDocumentClick onClose={() => setOpen(false)}>
+                        <div className="modal">
+                            <div className="d-flex justify-content-center align-items-center">
+                                <div className="col-2">
+                                    {valueOfPopup}
+                                </div>
+                            </div>
+                        </div>
+                    </Popup>
                 </div>
             </div>
         </>
