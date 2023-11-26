@@ -77,8 +77,16 @@ function Register() {
     }
 
     function changeMessage(input) {
-        if (input == "String must contain at least 4 character(s)")
+        if (input.startsWith("String must contain at least 4 character(s)"))
             return ("Username must contain at least 4 characters")
+        else if (input.startsWith("Invalid email"))
+            return ("Invalid email")
+        else if (input.startsWith("String must contain at least 8 character(s)"))
+            return ("Password must contain at least 8 characters")
+        else if (input.startsWith("Passwords don't match"))
+            return ("Passwords don't match")
+        else
+            return ("An error occured")
     }
 
     return (

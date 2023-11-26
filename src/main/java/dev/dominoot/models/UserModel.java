@@ -2,6 +2,9 @@ package dev.dominoot.models;
 
 public class UserModel {
 
+
+
+
     private Integer id;
     private String username;
     private String password;
@@ -15,6 +18,12 @@ public class UserModel {
         this.username = username;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+    public Integer getId() {
+        return id;
+    }
     public String getPassword() {
         return password;
     }
