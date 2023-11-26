@@ -53,9 +53,9 @@ function Register() {
             password: password,
             username: username
         }).then((response) => {
-            console.log(response.data.msg);
+            console.log(response.data);
             setOpen(o => !o);
-            setPopup(response.data.msg);
+            setPopup(response.data);
         });
     }
 
@@ -67,16 +67,18 @@ function Register() {
             if (err instanceof z.ZodError) {
                 console.log(err.issues);
 
-                // let mes = "";
-                // err.issues.forEach((error)=> {
-                //     mes += error.message;
-                // });
                 let mes = err.issues.map((error) => error.message).join("\n");
                 console.log(mes);
-                setPopup(mes);
+                let errorMes = changeMessage(mes);
+                setPopup(errorMes);
                 setOpen(true);
             }
         }
+    }
+
+    function changeMessage(input) {
+        if (input == "String must contain at least 4 character(s)")
+            return ("Username must contain at least 4 characters")
     }
 
     return (
@@ -97,7 +99,7 @@ function Register() {
                     <Popup open={open} closeOnDocumentClick onClose={() => setOpen(false)}>
                         <div className="modal">
                             <div className="d-flex justify-content-center align-items-center">
-                                <div className="col-2">
+                                <div className="col-7">
                                     {valueOfPopup}
                                 </div>
                             </div>

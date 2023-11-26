@@ -26,8 +26,8 @@ public class UserController {
     @PostMapping
     public ResponseEntity<String> createUser(@RequestBody UserModel user) {
         System.out.println("Received user: " + user);
-        userService.saveUser(user);
-        return ResponseEntity.ok("User created successfully");
+        String response = userService.saveUser(user);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/all")

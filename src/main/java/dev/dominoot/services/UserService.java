@@ -17,7 +17,7 @@ import java.util.Map;
 @Service
 public class UserService {
 
-    public void saveUser(UserModel user) {
+    public String saveUser(UserModel user) {
         Connection conn = null;
         try {
             String url = "jdbc:sqlite:D:/code/manager-of-stable/db/stable.db";
@@ -36,7 +36,16 @@ public class UserService {
                 preparedStatement.setString(2, user.getPassword());
                 preparedStatement.setString(3, user.getEmail());
 
-
+                List<Map<String, Object>> users = this.readUsers();
+                for (int u =0; u < users.size(); u++) {
+                    Map<String, Object> userInDB = users.get(u);
+                    if (user.getUsername().equals(userInDB.get("username")))
+                    {
+                        return("This username is taken");
+                    } else if (user.getEmail().equals(userInDB.get("email"))) {
+                        return("This email is in use");
+                    }
+                }
                 preparedStatement.executeUpdate();
             } catch (SQLException e) {
                 // Handle SQLException, log or rethrow as needed
@@ -56,6 +65,7 @@ public class UserService {
                 System.out.println(ex.getMessage());
             }
         }
+        return "user created";
     }
 
     public List<Map<String, Object>> readUsers() {
