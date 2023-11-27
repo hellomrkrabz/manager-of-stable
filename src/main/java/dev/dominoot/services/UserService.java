@@ -134,6 +134,7 @@ public class UserService {
                     user.setId(rs.getInt("id"));
                     user.setEmail(rs.getString("email"));
                     user.setUsername(rs.getString("username"));
+                    user.setPassword(rs.getString("password"));
                     rs.close();
                     return user;
                 //test
@@ -156,12 +157,8 @@ public class UserService {
     }
 
     public String validateUser(String username, String password) {
-        System.out.println(username);
-        System.out.println(password);
         UserModel user = readUser(username);
-        System.out.println(user.getUsername());
-        System.out.println(user.getPassword());
-        if (user.getUsername() != null) {
+        if (user != null && user.getUsername() != null) {
             String tempPassword = user.getPassword();
             if (tempPassword != null && tempPassword.equals(password)) {
                 return ("Logged in");

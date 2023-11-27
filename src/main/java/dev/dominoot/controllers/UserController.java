@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:3000/", allowedHeaders = "*", allowCredentials = "true")
-@RequestMapping("/api/register")
+@RequestMapping("/api")
 @RestController
 public class UserController {
     private final UserService userService;
@@ -21,7 +21,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<String> createUser(@RequestBody UserModel user) {
         System.out.println("Received user: " + user);
         String response = userService.saveUser(user);
@@ -39,10 +39,11 @@ public class UserController {
         }
     }
 
-    @GetMapping("/{username}")
-    public ResponseEntity<String> readUsers(@PathVariable String username, String password) {
+    @PostMapping("/{username}")
+    public ResponseEntity<String> readUser(@PathVariable String username, @RequestBody UserModel user) {
+        String pword = user.getPassword();
         try {
-            String response = userService.validateUser(username, password);
+            String response = userService.validateUser(username, pword);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             e.printStackTrace();

@@ -17,11 +17,12 @@ function Login() {
     const closeModal = () => setOpen(false);
 
     function submit() {
-        axios.post("http://localhost:8080/api/register", {
-            password: password,
-            username: username
+        const url = "http://localhost:8080/api/"+username;
+        console.log(password);
+        axios.post(url, {
+            username: username,
+            password: password
         }).then((response) => {
-            console.log(response.data);
             setOpen(o => !o);
             setPopup(response.data);
         });
@@ -36,9 +37,9 @@ function Login() {
             <div className="box-width d-flex flex-column align-items-center mx-auto ">
                 <div className="fs-1 text-center mt-2 mb-4">Login</div>
                 <div className="col align-items-center row gy-4">
-                    <div className={"button"}><TextField className={"button"} id="username" fullWidth label={"Username"} type={'text'}/></div>
-                    <div className={"button"}><TextField className={"button"} id="password" fullWidth label={"Password"} type={'password'}/></div>
-                    <Button variant="outline-info" className="me-2 mb-4">Login</Button>
+                    <div className={"button"}><TextField className={"button"} id="username" fullWidth label={"Username"} type={'text'} onChange={(e) => { setUsername(e.target.value) }}/></div>
+                    <div className={"button"}><TextField className={"button"} id="password" fullWidth label={"Password"} type={'password'} onChange={(e) => { setPassword(e.target.value) }}/></div>
+                    <Button variant="outline-info" className="me-2 mb-4"onClick={() => { submit() }}>Login</Button>
                     <Popup open={open} closeOnDocumentClick onClose={() => setOpen(false)}>
                         <div className="modal">
                             <div className="d-flex justify-content-center align-items-center">
