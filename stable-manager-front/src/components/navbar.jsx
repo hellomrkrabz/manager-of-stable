@@ -33,11 +33,20 @@ const Header = (props) => {
                     {props.site == "Register" &&
                         <Button variant="outline-info" className="me-2" onClick={()=>{window.location.href="/Login"}}>Login</Button>
                     }
-                    {props.site == "FrontPage" && (
+                    {props.site == "FrontPage" && props.Logged ?
+                        <>(
                         <>
                         <Button variant="outline-info" className="me-2" onClick={()=>{window.location.href="/Register"}}>Register</Button>
                         <Button variant="outline-info" className="me-2" onClick={()=>{window.location.href="/Login"}}>Login</Button>
                         </>)
+                        </>
+                        :
+                        <>(
+                            <>
+                                <Button variant="outline-info" className="me-2" onClick={()=>{window.location.href="/Profile"}}>Profile</Button>
+                            </>
+                            )
+                        </>
                     }
                     {/*<Button variant="outline-info" className="me-2" onClick={()=>{window.location.href="/Login"}}>Login</Button>*/}
                     {/*<Button variant="outline-info" className="me-2" onClick={()=>{window.location.href="/Register"}}>Register</Button>*/}

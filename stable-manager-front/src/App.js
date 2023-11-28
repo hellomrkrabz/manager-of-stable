@@ -6,8 +6,24 @@ import Register from "./sites/Register.jsx";
 import { BrowserRouter } from 'react-router-dom';
 import FrontPage from "./sites/MainPage";
 import Login from "./sites/Login";
+import Profile from "./sites/Profile";
 
+var sessionUserKey = document.cookie;
 function App() {
+  if (sessionUserKey !== undefined) {
+    var routes = [
+      {
+        path: '/',
+        element: <FrontPage Logged={true}/>
+      },
+      {
+        path: '/Profile',
+        element: <Profile />
+      }
+    ]
+
+  }
+  else {
   var routes = [
     {
       path: '/Register',
@@ -16,13 +32,13 @@ function App() {
     },
     {
       path: '/',
-      element: <FrontPage />,
+      element: <FrontPage Logged={false}/>,
     },
     {
       path: '/Login',
       element: <Login />,
     }
-  ];
+  ];}
 
   return(
       <BrowserRouter>
