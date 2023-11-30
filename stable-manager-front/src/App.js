@@ -7,8 +7,11 @@ import { BrowserRouter } from 'react-router-dom';
 import FrontPage from "./sites/MainPage";
 import Login from "./sites/Login";
 import Profile from "./sites/Profile";
+import getCookie from './scripts/cookie';
+import Logout from './sites/Logout'
 
-var sessionUserKey = document.cookie;
+var sessionUserKey = getCookie("sessionUserKey");
+var usernameKey = getCookie("usernameKey");
 function App() {
   if (sessionUserKey !== undefined) {
     var routes = [
@@ -19,6 +22,10 @@ function App() {
       {
         path: '/Profile',
         element: <Profile />
+      },
+      {
+        path: '/Logout',
+        element: <Logout/>
       }
     ]
 

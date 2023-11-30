@@ -51,4 +51,17 @@ public class UserController {
         }
     }
 
+    @GetMapping("/data/{username}")
+    public ResponseEntity<UserModel> getUserData(@PathVariable String username) {
+        try {
+            UserModel user = userService.readUser(username);
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();  // Log the exception
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
 }
+

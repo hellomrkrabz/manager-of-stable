@@ -7,7 +7,7 @@ import TextField from "@mui/material/TextField"
 import '../App.css'
 import '../Register.css'
 import Button from "react-bootstrap/Button";
-import '../scripts/Register'
+import '../scripts/cookie'
 import { z } from "zod";
 
 const schema = z.object({

@@ -42,6 +42,7 @@ function Login() {
             {
                 window.location.replace("/");
                 document.cookie = "sessionUserKey="+response.data.key+"; SameSite=None; Secure";
+                document.cookie = "usernameKey="+username+"; SameSite=None; Secure";
             }
         });
     }
