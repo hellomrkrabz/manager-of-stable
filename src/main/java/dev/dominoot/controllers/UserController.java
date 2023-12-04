@@ -62,6 +62,20 @@ public class UserController {
         }
     }
 
+    @PostMapping("/change/{username}")
+    public ResponseEntity<String> updateUser(@PathVariable String username, @RequestBody UserModel user) {
+        try {
+            System.out.println("ten id!!!" + user.getId());
+            System.out.println("ten username!!!" + user.getUsername());
+            String response = userService.updateUser(user);
+            return ResponseEntity.ok(response);
+        }
+        catch (Exception e) {
+            e.printStackTrace();  // Log the exception
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
 }
 

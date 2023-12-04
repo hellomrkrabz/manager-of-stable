@@ -22,7 +22,7 @@ public class UserModel {
         this.id = id;
     }
     public Integer getId() {
-        return id;
+        return this.id;
     }
     public String getPassword() {
         return password;

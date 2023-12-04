@@ -12,6 +12,7 @@ import Logout from './sites/Logout'
 
 var sessionUserKey = getCookie("sessionUserKey");
 var usernameKey = getCookie("usernameKey");
+var idKey = getCookie("idKey");
 function App() {
   if (sessionUserKey !== undefined) {
     var routes = [
