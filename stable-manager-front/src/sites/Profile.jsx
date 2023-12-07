@@ -51,6 +51,7 @@ function Profile() {
             email: email,
             password: password
         }).then((response) => {
+            document.cookie = "usernameKey="+username+"; SameSite=None; Secure";
             setOpen(o => !o);
             setPopup(response.data);
             setChangingDetails(!changingDetails);
