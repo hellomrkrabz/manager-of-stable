@@ -2,6 +2,7 @@ package dev.dominoot.controllers;
 
 import dev.dominoot.models.UserModel;
 import dev.dominoot.services.UserService;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,8 +44,9 @@ public class UserController {
     public ResponseEntity<String> readUser(@PathVariable String username, @RequestBody UserModel user) {
         String pword = user.getPassword();
         try {
-            String response = userService.validateUser(username, pword);
-            return ResponseEntity.ok(response);
+            JSONObject response = userService.validateUser(username, pword);
+            System.out.println(response.toString());
+            return ResponseEntity.ok(response.toString());
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

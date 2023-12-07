@@ -3,14 +3,20 @@ import Navbar from '../components/navbar'
 import background from '../media/background.jpg'
 import axios from 'axios'
 import '../MainPage.css'
+import getCookie from "../scripts/cookie";
 
 
 function FrontPage(props) {
-
+    const cookieExists = getCookie("sessionUserKey");
+    let cos = false;
+    if (cookieExists != null)
+    {
+     cos = true;
+    }
     return (
         <>
             <div>
-                <Navbar site={'FrontPage'} />
+                <Navbar site={'FrontPage'} Logged = {cos}/>
             </div>
             {props.Logged ? (
                     <div className='container-fluid'>

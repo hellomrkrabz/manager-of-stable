@@ -62,7 +62,7 @@ if (changingDetails === false) {
     return (
         <>
             <div>
-                <Navbar site={"Login"}/>
+                <Navbar site={"Profile"}/>
             </div>
             <div className="box-width d-flex flex-column align-items-center mx-auto ">
                 <div className="fs-1 text-center mt-2 mb-4">Profile</div>
@@ -80,7 +80,7 @@ else {
     return (
         <>
             <div>
-                <Navbar site={"Login"}/>
+                <Navbar site={"Profile"}/>
             </div>
             <div className="box-width d-flex flex-column align-items-center mx-auto ">
                 <div className="fs-1 text-center mt-2 mb-4">Editing profile</div>

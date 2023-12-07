@@ -36,12 +36,13 @@ function Login() {
             username: username,
             password: password
         }).then((response) => {
+            console.log(response);
             setOpen(o => !o);
-            setPopup(response.data);
-            if(response.data == "Logged in")
+            setPopup(response.data.message);
+            if(response.data.message === "Logged in")
             {
                 window.location.replace("/");
-                document.cookie = "sessionUserKey="+response.data.key+"; SameSite=None; Secure";
+                document.cookie = "sessionUserKey="+response.data.id+"; SameSite=None; Secure";
                 document.cookie = "usernameKey="+username+"; SameSite=None; Secure";
                 document.cookie ="idKey"+response.data.id+"; SameSite=None; Secure";
             }

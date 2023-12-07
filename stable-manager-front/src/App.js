@@ -9,6 +9,7 @@ import Login from "./sites/Login";
 import Profile from "./sites/Profile";
 import getCookie from './scripts/cookie';
 import Logout from './sites/Logout'
+import AdminPanel from "./sites/AdminPanel";
 
 var sessionUserKey = getCookie("sessionUserKey");
 var usernameKey = getCookie("usernameKey");
@@ -22,11 +23,15 @@ function App() {
       },
       {
         path: '/Profile',
-        element: <Profile />
+        element: <Profile Logged={true}/>
       },
       {
         path: '/Logout',
         element: <Logout/>
+      },
+      {
+        path: '/Admin',
+        element: <AdminPanel/>
       }
     ]
 

@@ -9,7 +9,7 @@ import Navbar from "react-bootstrap/Navbar";
 import {NavLink} from "react-router-dom";
 
 const Header = (props) => {
-
+    console.log("logged " + props)
     return (
         <Navbar bg="dark" variant="dark" expand="lg">
             <Container fluid>
@@ -27,23 +27,28 @@ const Header = (props) => {
                         {/*<NavLink className ="nav-link" to="/Register">Register</NavLink>*/}
                         {/*<NavLink className ="nav-link" to="/Login">Login</NavLink>*/}
                     </Nav>
-                    {props.site == "Login" &&
+                    {props.site === "Login" &&
                         <Button variant="outline-info" className="me-2" onClick={()=>{window.location.href="/Register"}}>Register</Button>
                     }
-                    {props.site == "Register" &&
+                    {props.site === "Register" &&
                         <Button variant="outline-info" className="me-2" onClick={()=>{window.location.href="/Login"}}>Login</Button>
                     }
-                    {props.site == "FrontPage" && props.Logged ?
+                    {props.site === "Profile" &&
+                        <Button variant="outline-info" className="me-2" onClick={()=>{window.location.href="/Logout"}}>Logout</Button>
+                    }
+                    {props.site === "FrontPage" && props.Logged ?
                         <>(
                         <>
-                        <Button variant="outline-info" className="me-2" onClick={()=>{window.location.href="/Register"}}>Register</Button>
-                        <Button variant="outline-info" className="me-2" onClick={()=>{window.location.href="/Login"}}>Login</Button>
+                        <Button variant="outline-info" className="me-2" onClick={()=>{window.location.href="/Logout"}}>Logout</Button>
                         </>)
                         </>
                         :
                         <>(
                             <>
-                                <Button variant="outline-info" className="me-2" onClick={()=>{window.location.href="/Profile"}}>Profile</Button>
+                                <Button variant="outline-info" className="me-2" onClick={()=>{window.location.href="/Register"}}>Register</Button>
+                                <Button variant="outline-info" className="me-2" onClick={()=>{window.location.href="/Login"}}>Login</Button>
+                                {
+                                    /*<Button variant="outline-info" className="me-2" onClick={()=>{window.location.href="/Profile"}}>Profile</Button>*/}
                             </>
                             )
                         </>

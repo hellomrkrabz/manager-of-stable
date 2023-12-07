@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.json.JSONObject;
 
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class })
 @Service
@@ -197,18 +198,31 @@ public class UserService {
         }
     }
 
+    public JSONObject toJSON(String s, UserModel user) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("message", s);
+        jsonObject.put("id", user.getId());
+        jsonObject.put("username", user.getUsername());
+        jsonObject.put("email", user.getEmail());
+        jsonObject.put("password", user.getPassword());
 
-    public String validateUser(String username, String password) {
+        return jsonObject;
+    }
+    public JSONObject validateUser(String username, String password) {
         UserModel user = readUser(username);
         if (user != null && user.getUsername() != null) {
             String tempPassword = user.getPassword();
             if (tempPassword != null && tempPassword.equals(password)) {
-                return ("Logged in");
+                JSONObject json = toJSON("Logged in", user);
+                System.out.println(json.toString());
+                return json;
             } else {
-                return ("Wrong password");
+                JSONObject json = toJSON("Wrong password", user);
+                return json;
             }
         }else {
-                return ("User not found");
+                JSONObject json = toJSON("User not found", user);
+                return json;
             }
     }
 
