@@ -10,6 +10,9 @@ public class UserModel {
     private String password;
     private String avatar;
 
+    private Integer role;
+    private String email;
+
     public String getUsername() {
         return this.username;
     }
@@ -41,12 +44,10 @@ public class UserModel {
     }
 
     public Integer getRole() {
-        return role;
+        return this.role;
     }
 
-    public void setRole(Integer role) {
-        this.role = role;
-    }
+    public void setRole(Integer role) {this.role = role;}
 
     public String getEmail() {
         return email;
@@ -56,6 +57,5 @@ public class UserModel {
         this.email = email;
     }
 
-    private Integer role;
-    private String email;
+
 }

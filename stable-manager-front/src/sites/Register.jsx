@@ -51,7 +51,8 @@ function Register() {
         axios.post("http://localhost:8080/api/register", {
             email: email,
             password: password,
-            username: username
+            username: username,
+            role: 1
         }).then((response) => {
             console.log(response.data);
             setOpen(o => !o);

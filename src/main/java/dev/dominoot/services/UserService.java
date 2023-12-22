@@ -24,7 +24,7 @@ public class UserService {
             DatabaseMetaData databaseMetaData = conn.getMetaData();
 
             String insertUser = """
-                    INSERT INTO users (username, password, email) VALUES (?, ?, ?)
+                    INSERT INTO users (username, password, email, role) VALUES (?, ?, ?, ?)
             """;
 
 
@@ -34,6 +34,7 @@ public class UserService {
                 preparedStatement.setString(1, user.getUsername());
                 preparedStatement.setString(2, user.getPassword());
                 preparedStatement.setString(3, user.getEmail());
+                preparedStatement.setInt(4, user.getRole());
 
                 List<Map<String, Object>> users = this.readUsers();
                 for (int u = 0; u < users.size(); u++) {
@@ -136,6 +137,7 @@ public class UserService {
                     user.setEmail(rs.getString("email"));
                     user.setUsername(rs.getString("username"));
                     user.setPassword(rs.getString("password"));
+                    user.setRole(rs.getInt("role"));
                     rs.close();
                     return user;
                 //test
@@ -212,11 +214,18 @@ public class UserService {
         UserModel user = readUser(username);
         if (user != null && user.getUsername() != null) {
             String tempPassword = user.getPassword();
-            if (tempPassword != null && tempPassword.equals(password)) {
+            System.out.println("rola kurczaki"+user.getRole());
+            if (tempPassword != null && tempPassword.equals(password) && user.getRole() != 0) {
                 JSONObject json = toJSON("Logged in", user);
                 System.out.println(json.toString());
                 return json;
-            } else {
+            }
+            else if (user.getRole().equals(0)){
+                JSONObject json = toJSON("No role assigned!", user);
+                return json;
+            }
+
+            else {
                 JSONObject json = toJSON("Wrong password", user);
                 return json;
             }

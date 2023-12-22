@@ -45,8 +45,8 @@ const Header = (props) => {
                         :
                         <>(
                             <>
-                                <Button variant="outline-info" className="me-2" onClick={()=>{window.location.href="/Register"}}>Register</Button>
-                                <Button variant="outline-info" className="me-2" onClick={()=>{window.location.href="/Login"}}>Login</Button>
+                                {/*<Button variant="outline-info" className="me-2" onClick={()=>{window.location.href="/Register"}}>Register</Button>
+                                <Button variant="outline-info" className="me-2" onClick={()=>{window.location.href="/Login"}}>Login</Button>*/}
                                 {
                                     /*<Button variant="outline-info" className="me-2" onClick={()=>{window.location.href="/Profile"}}>Profile</Button>*/}
                             </>

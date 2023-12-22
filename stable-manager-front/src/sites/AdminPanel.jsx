@@ -2,13 +2,19 @@ import React, { useEffect, useState } from 'react'
 import Navbar from '../components/navbar'
 import background from '../media/background.jpg'
 import axios from 'axios'
-import '../MainPage.css'
+import '../AdminPanel.css'
 import getCookie from "../scripts/cookie";
-
+import userToVerify from "../components/UserToVerify";
+import UserToVerify from "../components/UserToVerify";
+import {v4} from 'uuid';
 
 function AdminPanel(props) {
     const cookieExists = getCookie("sessionUserKey");
     let cos = false;
+    const [users, setUsers] = useState([])
+    const [displayDetails, setDisplayDetails] = useState(false)
+    const [user, setUser] = useState()
+
     if (cookieExists != null)
     {
         cos = true;
@@ -18,27 +24,25 @@ function AdminPanel(props) {
             <div>
                 <Navbar site={'FrontPage'} Logged = {cos}/>
             </div>
-            {props.Logged ? (
-                <div className='container-fluid'>
-                    <div className='row justify-content-center align-items-center'>
-                        <div className='col-md-5'>
-                            <div className='fs-1 mt-3 mb-0 text-uppercase text-shadow-light'>
-                                <p className='fw-bold h1 text-top-logged' style={{"color":'royalblue'}}>zalogierowan</p>
+            <>
+                <div className="box-width-admin d-flex flex-column align-items-center mx-auto ">
+                    <>
+                        <div className="container-fluid d-flex flex-column align-items-center">
+                            <div className="row row col-11 py-3">
+                                <div className="col-3 fs-2">Date of registration</div>
+                                <div className="col-3 fs-2">Username</div>
+                                <div className="col-3 fs-2">Email</div>
+                                <div className="col-3 fs-2">Action</div>
                             </div>
+
+                            {users.map((r)=><UserToVerify user={{...r}} setDisplayDetails={setDisplayDetails} setUser={setUser} key={v4()}/>)}
+                            {users.length===0 &&
+                                <div>Nothing here</div>
+                            }
                         </div>
-                    </div>
+                    </>
                 </div>
-            ) : (
-                <div className='container-fluid'>
-                    <div className='row justify-content-center align-items-center'>
-                        <div className='col-md-5'>
-                            <div className='fs-1 mt-3 mb-0 text-uppercase text-shadow-light'>
-                                <p className='fw-bold h1 text-top-logged' style={{"color":'royalblue'}}>stable manager</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
+            </>
         </>
     )
 }
