@@ -7,9 +7,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.sql.*;
 
 import org.springframework.util.Base64Utils;
@@ -18,7 +20,7 @@ import org.springframework.util.Base64Utils;
 @Service
 public class HorseService {
 
-    ResponseEntity<String> saveImage(String image, Integer id) {
+    String saveImage(String image, Integer id) {
         try {
             String base64Image = image;
 
@@ -29,20 +31,21 @@ public class HorseService {
             byte[] imageBytes = Base64Utils.decodeFromString(base64Image);
 
             // Specify the file path where you want to save the image
-            String filePath = "../../../../../media/"+id+".jpg";
+            System.out.println(System.getProperty("user.dir"));
+            String filePath = "media" + File.separator + "id" + ".jpg";
 
             // Write the bytes to a file
-            Files.write(Paths.get(filePath), imageBytes);
+            Files.write(Paths.get(filePath), imageBytes, StandardOpenOption.CREATE);
 
             // Rest of your logic...
-            return ResponseEntity.ok("Image saved successfully");
+            return ("Image saved successfully");
         } catch (IOException e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error saving image");
+            return ("Error saving image");
         }
     }
     public String saveHorse(HorseModel horse) {
-        saveImage(horse.getImage(), horse.getId());
+        String avatar = saveImage(horse.getImage(), horse.getId());
         Connection conn = null;
         try {
             String url = "jdbc:sqlite:D:/code/manager-of-stable/db/stable.db";
@@ -59,7 +62,7 @@ public class HorseService {
                 System.out.println(horse.getName());
                 preparedStatement.setString(1, horse.getName());
                 preparedStatement.setDate(2, horse.getBirthDate());
-                preparedStatement.setString(3, horse.getImage());
+                preparedStatement.setString(3, avatar);
                 preparedStatement.setInt(4, horse.getOwnerId());
                 preparedStatement.setString(5, horse.getDietaryDescription());
                 preparedStatement.setString(6, horse.getTurnoutDescription());

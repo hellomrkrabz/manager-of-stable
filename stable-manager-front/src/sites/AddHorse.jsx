@@ -11,6 +11,7 @@ import '../scripts/cookie'
 import '../AddHorse.css'
 import def from '../media/horsie.jpg'
 import getCookie from "../scripts/cookie";
+import {decode as base64_decode, encode as base64_encode} from 'base-64';
 function AddHorse() {
     const [name, setName] = useState("");
     const [dietaryDescription, setDietaryDescription] = useState("");
@@ -20,6 +21,7 @@ function AddHorse() {
     const [valueOfPopup, setPopup] = useState("");
     const [open, setOpen] = useState(false);
     const [avatar, setAvatar] = useState(def);
+    const base64 ='';
     const closeModal = () => setOpen(false);
 
     const idKey = getCookie("idKey");
@@ -43,12 +45,13 @@ function AddHorse() {
         }
     };
 
+
     function submit() {
         console.log("user id: " + idKey);
         axios.post("http://localhost:8080/horse/add", {
             name: name,
             birthday: birthday,
-            image: avatar,
+            image: base64_encode(avatar),
             ownerId: idKey,
             dietaryDescription: dietaryDescription,
             turnoutDescription: turnoutDescription,
