@@ -19,6 +19,7 @@
     "react-dom": "^18.2.0",
     "react-easy-router": "^2.2.0",
     "react-material-ui-carousel": "^3.4.2",
+    "react-native": "^0.73.1",
     "react-router-dom": "^6.19.0",
     "react-scripts": "5.0.1",
     "reactjs-popup": "^2.0.6",

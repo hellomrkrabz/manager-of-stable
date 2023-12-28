@@ -7,6 +7,7 @@ import TextField from "@mui/material/TextField"
 import Logo from "../components/logo";
 import Button from "react-bootstrap/Button";
 import {z} from "zod";
+import getCookie from "../scripts/cookie";
 
 
 const schema = z.object({
@@ -36,7 +37,7 @@ function Login() {
             username: username,
             password: password
         }).then((response) => {
-            console.log(response);
+            console.log(response.data);
             setOpen(o => !o);
             setPopup(response.data.message);
             if(response.data.message === "Logged in")
@@ -44,7 +45,7 @@ function Login() {
                 window.location.replace("/");
                 document.cookie = "sessionUserKey="+response.data.id+"; SameSite=None; Secure";
                 document.cookie = "usernameKey="+username+"; SameSite=None; Secure";
-                document.cookie ="idKey"+response.data.id+"; SameSite=None; Secure";
+                document.cookie ="idKey="+response.data.id+"; SameSite=None; Secure";
             }
         });
     }

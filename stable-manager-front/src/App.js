@@ -10,6 +10,8 @@ import Profile from "./sites/Profile";
 import getCookie from './scripts/cookie';
 import Logout from './sites/Logout'
 import AdminPanel from "./sites/AdminPanel";
+import AddHorse from "./sites/AddHorse";
+import Horses from "./sites/Horses";
 
 var sessionUserKey = getCookie("sessionUserKey");
 var usernameKey = getCookie("usernameKey");
@@ -32,6 +34,14 @@ function App() {
       {
         path: '/Admin',
         element: <AdminPanel/>
+      },
+      {
+        path: '/AddHorse',
+        element: <AddHorse/>
+      },
+      {
+        path: '/Horses',
+        element: <Horses/>
       }
     ]
 
