@@ -12,6 +12,7 @@ import Logout from './sites/Logout'
 import AdminPanel from "./sites/AdminPanel";
 import AddHorse from "./sites/AddHorse";
 import Horses from "./sites/Horses";
+import HorseProfile from "./sites/HorseProfile";
 
 var sessionUserKey = getCookie("sessionUserKey");
 var usernameKey = getCookie("usernameKey");
@@ -42,6 +43,10 @@ function App() {
       {
         path: '/Horses',
         element: <Horses/>
+      },
+      {
+        path: '/HorseProfile/:id',
+        element: <HorseProfile/>
       }
     ]
 

@@ -28,3 +28,32 @@ input[type=file]{
     background: rgba(108, 108, 114, 0.6);
     margin-top: 3%;
 }
+
+.horse-box-left {
+    width: 500px;
+    background: rgba(108, 108, 114, 0.6);
+}
+
+.popup-content-visit {
+    margin: auto;
+    background: rgba(108, 108, 114, 0.6);
+    border: 1px solid #0b5a72;
+    border-radius: 4px;
+    width: 50%;
+    padding: 5px;
+    text-align: center;
+    font-size: 20px;
+    font-family: Arial;
+}
+
+.popup-overlay-visit {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.modal-visit {
+    display: contents !important;
+}
+
+.test-testowy {
+    margin-bottom: 10px;
+}

@@ -1,6 +1,7 @@
 package dev.dominoot.services;
 
 import dev.dominoot.models.HorseModel;
+import dev.dominoot.models.UserModel;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.util.Base64Utils;
 
@@ -90,5 +95,99 @@ public class HorseService {
         return "Horse added";
     }
 
-   }
+    public List<Map<String, Object>> readHorses() {
+        Connection conn = null;
+        List<Map<String, Object>> horses = new ArrayList<Map<String, Object>>();
+        try {
+            String url = "jdbc:sqlite:D:/code/manager-of-stable/db/stable.db";
+            conn = DriverManager.getConnection(url);
+            DatabaseMetaData databaseMetaData = conn.getMetaData();
+
+            String readHorses = """
+                    SELECT * FROM horses
+            """;
+
+
+            try (Statement stmt = conn.createStatement();
+                 ResultSet rs = stmt.executeQuery(readHorses)) {
+                ResultSetMetaData metaData = rs.getMetaData();
+                int columnCount = metaData.getColumnCount();
+
+                while (rs.next()) {
+                    Map<String, Object> horse = new HashMap<>();
+
+                    for (int i = 1; i <= columnCount; i++) {
+                        String columnName = metaData.getColumnName(i);
+                        Object columnValue = rs.getObject(i);
+                        horse.put(columnName, columnValue);
+                    }
+
+                    horses.add(horse);
+                }
+            } catch (SQLException e) {
+                // Handle SQLException, log or rethrow as needed
+                e.printStackTrace();
+            }
+            //test
+            System.out.println("Connection to SQLite has been established.");
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        return horses;
+    }
+
+    public HorseModel readHorse(Integer id) {
+        Connection conn = null;
+        ResultSet resultSet = null;
+        HorseModel horse = new HorseModel();
+        try {
+            String url = "jdbc:sqlite:D:/code/manager-of-stable/db/stable.db";
+            conn = DriverManager.getConnection(url);
+            DatabaseMetaData databaseMetaData = conn.getMetaData();
+            PreparedStatement preparedStatement = null;
+            String sql = "SELECT * FROM horses WHERE id=?";
+            preparedStatement = conn.prepareStatement(sql);
+            System.out.println("id:" + id);
+            preparedStatement.setInt(1, id);
+
+            try (Statement stmt = conn.createStatement();
+                 ResultSet rs = preparedStatement.executeQuery()) {
+
+                horse.setId(rs.getInt("id"));
+                horse.setName(rs.getString("name"));
+                horse.setBirthDate(rs.getDate("birthday"));
+                horse.setDietaryDescription(rs.getString("dietaryDescription"));
+                horse.setTurnoutDescription(rs.getString("turnoutDescription"));
+                horse.setOtherDetails(rs.getString("otherDetails"));
+                horse.setImage(rs.getString("image"));
+                horse.setOwnerId(rs.getInt("ownerId"));
+                rs.close();
+                return horse;
+
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+                return null;
+            } finally {
+                try {
+                    if (conn != null) {
+                        conn.close();
+                    }
+                } catch (SQLException ex) {
+                    System.out.println(ex.getMessage());
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
 

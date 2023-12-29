@@ -19,13 +19,13 @@ function AdminPanel(props) {
         getData();
     }, []);
     function getData() {
-        const url = "http://localhost:8080/api/data/"+usernameKey;
+        const url = "http://localhost:8080/api/data/";//+usernameKey;
         axios.get(url)
             .then((response) => {
-                setUsername(response.data.username);
-                setPassword(response.data.password);
-                setEmail(response.data.email);
-                setId(response.data.id);
+               // setUsername(response.data.username);
+               // setPassword(response.data.password);
+               // setEmail(response.data.email);
+               // setId(response.data.id);
             })
             .catch((error) => {
                 console.error("Error fetching data:", error);

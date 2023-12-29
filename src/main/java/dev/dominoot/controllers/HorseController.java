@@ -29,16 +29,26 @@ public class HorseController {
         return ResponseEntity.ok(response);
     }
 
-//    @GetMapping("/all")
-//    public ResponseEntity<List<Map<String, Object>>> readHorses() {
-//        try {
-//            List<Map<String, Object>> horses = horseService.readHorses();
-//            return new ResponseEntity<>(horses, HttpStatus.OK);
-//        } catch (Exception e) {
-//            e.printStackTrace();  // Log the exception
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
+    @GetMapping("/all")
+    public ResponseEntity<List<Map<String, Object>>> readHorses() {
+        try {
+            List<Map<String, Object>> horses = horseService.readHorses();
+            return new ResponseEntity<>(horses, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();  // Log the exception
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @GetMapping("/data/{id}")
+    public ResponseEntity<HorseModel> getUserData(@PathVariable Integer id) {
+        try {
+            HorseModel horse = horseService.readHorse(id);
+            return new ResponseEntity<>(horse, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();  // Log the exception
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 //
 //
 //    @GetMapping("/data/{id}")
