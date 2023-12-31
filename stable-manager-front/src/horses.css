@@ -7,3 +7,9 @@
     height: 56%;
     width: 22%;
 }
+
+.visit-box {
+    background: rgba(108, 108, 114, 0.6);
+    margin-top: 3%;
+    height: 10%;
+}

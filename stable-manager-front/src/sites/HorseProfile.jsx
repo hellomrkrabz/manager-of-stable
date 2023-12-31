@@ -10,6 +10,7 @@ import Popup from "reactjs-popup";
 import def from "../media/horsie.jpg";
 import VisitComponent from "../components/VisitComponent";
 import Dropdown from 'react-bootstrap/Dropdown';
+import {encode as base64_encode} from "base-64";
 
 function getIdFromLink()
 {
@@ -37,25 +38,53 @@ function HorseProfile(props) {
     const [valueOfPopup, setPopup] = useState("");
     const [open, setOpen] = useState(false);
     const [visitDate, setVisitDate] = useState("");
+    const [visitType, setVisitType] = useState("");
     const [details, setDetails] = useState("");
     const closeModal = () => setOpen(false);
 
 
     useEffect(() => {
         getData();
+        getVisitData();
     }, []);
+
+    useEffect(()=>{
+        console.log(visits);
+    },[visits])
     function getData() {
 
         axios.get("http://localhost:8080/horse/data/" + getIdFromLink()).then((response) => {
             console.log(response.data.name);
             setName(response.data.name);
-            //setPassword(response.data.password);
-            //setEmail(response.data.email);
-            //setId(response.data.id);
         })
             .catch((error) => {
                 console.error("Error fetching data:", error);
             });
+    }
+
+    function getVisitData() {
+
+        axios.get("http://localhost:8080/visit/data/" + getIdFromLink()).then((response) => {
+        console.log(response.data);
+        setVisits([response.data]);
+        })
+            .catch((error) => {
+                console.error("Error fetching data:", error);
+            });
+    }
+
+    function submitVisit() {
+        console.log(visitType);
+        axios.post("http://localhost:8080/visit/add", {
+            visitType: visitType,
+            date: visitDate,
+            horseId: getIdFromLink(),
+            description: details
+        }).then((response) => {
+            console.log(response.data);
+            setOpen(o => !o);
+            setPopup(response.data);
+        });
     }
 
     function addVisit() {
@@ -68,15 +97,16 @@ function HorseProfile(props) {
                     </Dropdown.Toggle>
 
                     <Dropdown.Menu>
-                        <Dropdown.Item href="#/action-1">Deworming</Dropdown.Item>
-                        <Dropdown.Item href="#/action-2">Vet visit</Dropdown.Item>
-                        <Dropdown.Item href="#/action-3">Farrier visit</Dropdown.Item>
+                        <Dropdown.Item onClick={(e) => {setVisitType(1)}}>Deworming</Dropdown.Item>
+                        <Dropdown.Item onClick={(e) => {setVisitType(2)}}>Vet visit</Dropdown.Item>
+                        <Dropdown.Item onClick={(e) => {setVisitType(3)}}>Farrier visit</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
-            <div className={"button test-testowy"}><TextField className={"button"} id="birthday" fullWidth label={"Birth date"} type={'date'} onChange={(e) => {setBirthday(e.target.value)
+            <div className={"button test-testowy"}><TextField className={"button"} id="visitDate" fullWidth label={"Visit date"} type={'date'} onChange={(e) => {setVisitDate(e.target.value)
             }}/></div>
 
-                <div className={"text-center test-testowy"}><TextField className={"button"} id="otherDetails" fullWidth label={"Details"} type={'text'} onChange={(e) => { setOtherDetails(e.target.value) }}/></div>
+                <div className={"text-center test-testowy"}><TextField className={"button"} id="details" fullWidth label={"Details"} type={'text'} onChange={(e) => { setDetails(e.target.value) }}/></div>
+                <Button variant="outline-info" className="me-2 mb-5" onClick={() => {submitVisit() }} id="submit" name="submit">Add visit</Button>
             </>
     );
     }
@@ -114,7 +144,7 @@ function HorseProfile(props) {
                     <div className="row row col-11 py-3">
                         <Button variant="outline-info" className="me-2 mb-5" onClick={() => {addVisit() }} id="submit" name="submit">Add visit</Button>
 
-                        <Popup open={open} closeOnDocumentClick onClose={() => setOpen(false)}>
+                        <Popup open={open} closeOnDocumentClick={false} onClose={() => setOpen(false)}>
                             <div className="modal-visit">
                                 <div className="d-flex justify-content-center align-items-center">
                                     <div className="col-7 popup">
@@ -123,11 +153,12 @@ function HorseProfile(props) {
                                 </div>
                             </div>
                         </Popup>
-
-                        {visits.map((r)=><VisitComponent report={{...r}}/>)}
+                    <div style={{ overflow: 'auto', height: '700px' }}>
+                        {visits.map((r)=><VisitComponent {...r}/>)}
                         {visits.length===0 &&
                             <div>Nothing here</div>
                         }
+                    </div>
                 </div>
                 </div>
             </div>
