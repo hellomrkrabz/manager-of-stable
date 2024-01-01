@@ -49,31 +49,19 @@ public class HorseController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-//
-//
-//    @GetMapping("/data/{id}")
-//    public ResponseEntity<HorseModel> getUserData(@PathVariable Integer id) {
-//        try {
-//            HorseModel horse = horseService.readHorse(id);
-//            return new ResponseEntity<>(horse, HttpStatus.OK);
-//        } catch (Exception e) {
-//            e.printStackTrace();  // Log the exception
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
-//
-//    @PostMapping("/change/{username}")
-//    public ResponseEntity<String> updateUser(@PathVariable String username, @RequestBody HorseModel horse) {
-//        try {
-//            System.out.println("ten id!!!" + horse.getId());
-//            String response = horseService.updateHorse(horse);
-//            return ResponseEntity.ok(response);
-//        }
-//        catch (Exception e) {
-//            e.printStackTrace();  // Log the exception
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
+
+    @PostMapping("/change/{id}")
+    public ResponseEntity<String> updateHorse(@RequestBody HorseModel horse) {
+        try {
+            System.out.println("ten id!!!" + horse.getId());
+            String response = horseService.updateHorse(horse);
+            return ResponseEntity.ok(response);
+        }
+        catch (Exception e) {
+            e.printStackTrace();  // Log the exception
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 
 }

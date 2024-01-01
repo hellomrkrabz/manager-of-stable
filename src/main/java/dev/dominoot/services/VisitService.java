@@ -155,5 +155,58 @@ public class VisitService {
             throw new RuntimeException(e);
         }
     }
+
+    public List<Map<String, Object>> readVisitsForHorse(Integer id) {
+        Connection conn = null;
+        List<Map<String, Object>> visits = new ArrayList<Map<String, Object>>();
+        try {
+            String url = "jdbc:sqlite:D:/code/manager-of-stable/db/stable.db";
+            conn = DriverManager.getConnection(url);
+            DatabaseMetaData databaseMetaData = conn.getMetaData();
+
+            PreparedStatement preparedStatement = null;
+            String readVisits = """
+                    SELECT * FROM visits WHERE horseId=?
+            """;
+            preparedStatement = conn.prepareStatement(readVisits);
+            System.out.println("id:" + id);
+            preparedStatement.setInt(1, id);
+
+            try (Statement stmt = conn.createStatement();
+                 ResultSet rs = preparedStatement.executeQuery()) {
+                ResultSetMetaData metaData = rs.getMetaData();
+                int columnCount = metaData.getColumnCount();
+
+                while (rs.next()) {
+                    Map<String, Object> visit = new HashMap<>();
+
+                    for (int i = 1; i <= columnCount; i++) {
+                        String columnName = metaData.getColumnName(i);
+                        Object columnValue = rs.getObject(i);
+                        visit.put(columnName, columnValue);
+                    }
+
+                    visits.add(visit);
+                }
+            } catch (SQLException e) {
+                // Handle SQLException, log or rethrow as needed
+                e.printStackTrace();
+            }
+            //test
+            System.out.println("Connection to SQLite has been established.");
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        return visits;
+    }
 }
 

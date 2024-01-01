@@ -40,9 +40,9 @@ public class VisitController {
         }
     }
     @GetMapping("/data/{id}")
-    public ResponseEntity<VisitModel> getUserData(@PathVariable Integer id) {
+    public ResponseEntity<List<Map<String, Object>>> getUserData(@PathVariable Integer id) {
         try {
-            VisitModel visit = visitService.readVisit(id);
+            List<Map<String, Object>> visit = visitService.readVisitsForHorse(id);
             return new ResponseEntity<>(visit, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();  // Log the exception

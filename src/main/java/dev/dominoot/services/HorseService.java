@@ -9,15 +9,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.springframework.util.Base64Utils;
 
@@ -25,22 +24,41 @@ import org.springframework.util.Base64Utils;
 @Service
 public class HorseService {
 
+    private static void saveBase64ImageToFile(String base64Image, String filePath) throws IOException {
+        // Decode Base64 string to bytes
+        byte[] imageBytes = Base64.getDecoder().decode(base64Image);
+
+        // Write bytes to file
+        Path path = Paths.get(filePath);
+        Files.write(path, imageBytes);
+
+        // If you want to write to a binary image file, you can use FileOutputStream instead
+        // Uncomment the following lines if you want to write to a binary image file
+        // try (FileOutputStream fos = new FileOutputStream(filePath)) {
+        //     fos.write(imageBytes);
+        // }
+    }
     String saveImage(String image, Integer id) {
         try {
             String base64Image = image;
 
+
             // Remove the data:image/png;base64, prefix if it exists
-            base64Image = base64Image.replace("data:image/png;base64,", "");
+            base64Image = base64Image.replace("data:image/jpeg;base64,", "");
 
             // Decode the base64 string to bytes
-            byte[] imageBytes = Base64Utils.decodeFromString(base64Image);
-
+            //byte[] imageBytes = Base64Utils.decodeFromString(base64Image);
+            base64Image = base64Image.replaceAll("\\s", "");
+            byte[] imageBytes = Base64.getDecoder().decode(base64Image);
             // Specify the file path where you want to save the image
             System.out.println(System.getProperty("user.dir"));
             String filePath = "media" + File.separator + "id" + ".jpg";
+            String filePath2 = "media" + File.separator + "id" + ".txt";
 
             // Write the bytes to a file
             Files.write(Paths.get(filePath), imageBytes, StandardOpenOption.CREATE);
+            saveBase64ImageToFile(base64Image, filePath2);
+            saveBase64toDisk(image, "halo");
 
             // Rest of your logic...
             return ("Image saved successfully");
@@ -49,6 +67,29 @@ public class HorseService {
             return ("Error saving image");
         }
     }
+
+    public void saveBase64toDisk(String image, String name) {
+        try {
+            String base64Image;
+            if (image.contains(",")) {
+                base64Image = image.split(",")[1];
+            } else {
+                base64Image = image;
+            }
+            byte[] imageBytes = javax.xml.bind.DatatypeConverter.parseBase64Binary(base64Image);
+
+            String mediaPath = "D:\\code\\manager-of-stable\\media\\";
+            FileOutputStream fileOutPutStream = new FileOutputStream(mediaPath + name + ".jpg");
+
+
+            fileOutPutStream.write(imageBytes);
+            fileOutPutStream.close();
+
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     public String saveHorse(HorseModel horse) {
         String avatar = saveImage(horse.getImage(), horse.getId());
         Connection conn = null;
@@ -188,6 +229,56 @@ public class HorseService {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public String updateHorse(HorseModel horse) {
+        Connection conn = null;
+        try {
+            String url = "jdbc:sqlite:D:/code/manager-of-stable/db/stable.db";
+            conn = DriverManager.getConnection(url);
+            DatabaseMetaData databaseMetaData = conn.getMetaData();
+
+            String updateHorse = """
+                    UPDATE horses
+                            SET dietaryDescription = ?, turnoutDescription = ?, otherDetails = ?
+                            WHERE id = ?;
+            """;
+
+
+            try (PreparedStatement preparedStatement = conn.prepareStatement(updateHorse)) {
+
+                if (horse != null) {
+                    System.out.println("ten id: " + horse.getId());
+                    System.out.println("ten diet: " + horse.getDietaryDescription());
+
+                    preparedStatement.setString(1, horse.getDietaryDescription());
+                    preparedStatement.setString(2, horse.getTurnoutDescription());
+                    preparedStatement.setString(3, horse.getOtherDetails());
+                    preparedStatement.setInt(4, horse.getId());
+                    preparedStatement.executeUpdate();
+                }
+                else {
+                    return ("Horse not found");
+                }
+            } catch (SQLException e) {
+                // Handle SQLException, log or rethrow as needed
+                e.printStackTrace();
+            }
+            //test
+            System.out.println("Connection to SQLite has been established.");
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        return "Horse updated";
     }
 }
 

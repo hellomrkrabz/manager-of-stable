@@ -1,3 +1,9 @@
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Base64;
+
 plugins {
     id 'java'
     id 'org.springframework.boot' version '2.5.5'
@@ -19,6 +25,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.xerial:sqlite-jdbc:3.34.0'
     implementation 'org.json:json:20210307'
+    implementation 'javax.xml.bind:jaxb-api:2.3.1'
 }
 
 test {

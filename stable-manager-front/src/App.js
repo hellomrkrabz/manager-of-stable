@@ -13,6 +13,7 @@ import AdminPanel from "./sites/AdminPanel";
 import AddHorse from "./sites/AddHorse";
 import Horses from "./sites/Horses";
 import HorseProfile from "./sites/HorseProfile";
+import AddVisit from "./sites/AddVisit";
 
 var sessionUserKey = getCookie("sessionUserKey");
 var usernameKey = getCookie("usernameKey");
@@ -47,6 +48,10 @@ function App() {
       {
         path: '/HorseProfile/:id',
         element: <HorseProfile/>
+      },
+      {
+        path: '/AddVisit/:id',
+        element: <AddVisit/>
       }
     ]
 
