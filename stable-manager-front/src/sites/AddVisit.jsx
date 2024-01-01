@@ -98,9 +98,7 @@ function AddVisit(props) {
             horseId: getIdFromLink(),
             description: details
         }).then((response) => {
-            console.log(response.data);
-            setOpen(o => !o);
-            setPopup(response.data);
+            window.location.replace("/HorseProfile/"+getIdFromLink());
         });
     }
 

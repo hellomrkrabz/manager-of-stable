@@ -10,6 +10,11 @@
 
 .visit-box {
     background: rgba(108, 108, 114, 0.6);
+    margin-top: 10px;
+}
+
+.visit-box-new {
+    background: rgba(108, 108, 114, 0.6);
     margin-top: 3%;
-    height: 10%;
+    margin-bottom: 2%;
 }

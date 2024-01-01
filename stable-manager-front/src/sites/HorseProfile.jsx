@@ -12,6 +12,9 @@ import VisitComponent from "../components/VisitComponent";
 import Dropdown from 'react-bootstrap/Dropdown';
 import {encode as base64_encode} from "base-64";
 import InputLabel from "@mui/material/InputLabel";
+import HorsesComponent from "../components/HorsesComponent";
+import VisitsComponent from "../components/VisitsComponent";
+import horses from "./Horses";
 
 function getIdFromLink()
 {
@@ -43,6 +46,8 @@ function HorseProfile(props) {
     const [details, setDetails] = useState("");
     const closeModal = () => setOpen(false);
     const [changingDetails, setChangingDetails] = useState(false);
+    const [visitsToDisplay, setVisitsToDisplay] = useState(visits)
+    const [displayDetails, setDisplayDetails] = useState(false)
 
 
     useEffect(() => {
@@ -89,6 +94,15 @@ function HorseProfile(props) {
                 console.error("Error fetching data:", error);
             });
     }
+
+    useEffect(() => {
+        if(visits!==undefined && visits.length > 0)
+        {
+            let noe=20;
+            //let offset=pageNumber*noe;
+            setVisitsToDisplay(visits)
+        }
+    }, );
 
     function submitVisit() {
         console.log(visitType);
@@ -149,10 +163,11 @@ if (changingDetails===false) {
                             </div>
                         </Popup>
                     <div style={{ overflow: 'auto', height: '700px' }}>
-                        {visits.map((r)=><VisitComponent {...r}/>)}
-                        {visits.length===0 &&
-                            <div>Nothing here</div>
-                        }
+                        <VisitsComponent visits={visitsToDisplay} setDetails={setDetails} setDisplayDetails={setDisplayDetails}/>
+                        {/*{visits.map((r)=><VisitComponent {...r}/>)}*/}
+                        {/*{visits.length===0 &&*/}
+                        {/*    <div>Nothing here</div>*/}
+                        {/*}*/}
                     </div>
                 </div>
                 </div>
