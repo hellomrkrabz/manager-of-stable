@@ -23,58 +23,62 @@ import org.springframework.util.Base64Utils;
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class })
 @Service
 public class HorseService {
-    String saveImage(String image, Integer id) {
-        try {
-            String base64Image = image;
 
+    private void saveBase64ImageToFile(String base64Image, String filePath, String name) throws IOException {
+        byte[] imageBytes = Base64.getDecoder().decode(base64Image);
+        Path path = Paths.get(filePath);
+        Files.write(path, imageBytes);
+        updateHorseImage(Integer.parseInt(name), filePath);
+    }
+    String saveImage(String image, Integer id) throws IOException {
+        String base64Image = image;
+        base64Image = base64Image.replace("data:image/jpeg;base64,", "");
+        base64Image = base64Image.replaceAll("\\s", "");
 
-            // Remove the data:image/png;base64, prefix if it exists
-            base64Image = base64Image.replace("data:image/jpeg;base64,", "");
+        System.out.println(System.getProperty("user.dir"));
+        String filePath = "media" + File.separator + id.toString() + ".jpg";
 
-            // Decode the base64 string to bytes
-            //byte[] imageBytes = Base64Utils.decodeFromString(base64Image);
-            base64Image = base64Image.replaceAll("\\s", "");
-            byte[] imageBytes = Base64.getDecoder().decode(base64Image);
-            // Specify the file path where you want to save the image
-            System.out.println(System.getProperty("user.dir"));
-            String filePath = "media" + File.separator + "id" + ".jpg";
-            String filePath2 = "media";
+        saveBase64ImageToFile(base64Image, filePath, id.toString());
 
-            // Write the bytes to a file
-            Files.write(Paths.get(filePath), imageBytes, StandardOpenOption.CREATE);
-            saveBase64toDisk(image, "id.toString()", filePath2);
-
-            // Rest of your logic...
-            return ("Image saved successfully");
-        } catch (IOException e) {
-            e.printStackTrace();
-            return ("Error saving image");
-        }
+        return ("Image saved successfully");
     }
 
-    public void saveBase64toDisk(String image, String name, String filePath) {
+    public void updateHorseImage(Integer id, String filePath) {
+        Connection conn = null;
         try {
-            String base64Image;
-            if (image.contains(",")) {
-                base64Image = image.split(",")[1];
-            } else {
-                base64Image = image;
+            String url = "jdbc:sqlite:D:/code/manager-of-stable/db/stable.db";
+            conn = DriverManager.getConnection(url);
+            DatabaseMetaData databaseMetaData = conn.getMetaData();
+
+            String updateHorse = """
+                                        UPDATE horses
+                            SET image = ?
+                            WHERE id = ?;
+            """;
+
+            try (PreparedStatement preparedStatement = conn.prepareStatement(updateHorse)) {
+                preparedStatement.setString(1, filePath);
+                preparedStatement.setInt(2, id);
+                preparedStatement.executeUpdate();
+
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-            byte[] imageBytes = javax.xml.bind.DatatypeConverter.parseBase64Binary(base64Image);
 
-            String mediaPath = "D:\\code\\manager-of-stable\\media\\";
-            FileOutputStream fileOutPutStream = new FileOutputStream(filePath + name + ".jpg");
-
-            fileOutPutStream.write(imageBytes);
-            fileOutPutStream.close();
-
-        } catch (IOException e) {
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
         }
     }
 
     public String saveHorse(HorseModel horse) {
-        String avatar = saveImage(horse.getImage(), horse.getId());
         Connection conn = null;
         try {
             String url = "jdbc:sqlite:D:/code/manager-of-stable/db/stable.db";
@@ -82,7 +86,7 @@ public class HorseService {
             DatabaseMetaData databaseMetaData = conn.getMetaData();
 
             String insertUser = """
-                    INSERT INTO horses (name, birthday, image, ownerId, dietaryDescription, turnoutDescription, otherDetails) VALUES (?, ?, ?, ?, ?, ?, ?)
+                    INSERT INTO horses (name, birthday, ownerId, dietaryDescription, turnoutDescription, otherDetails) VALUES (?, ?, ?, ?, ?, ?)
             """;
 
 
@@ -91,16 +95,30 @@ public class HorseService {
                 System.out.println(horse.getName());
                 preparedStatement.setString(1, horse.getName());
                 preparedStatement.setDate(2, horse.getBirthDate());
-                preparedStatement.setString(3, avatar);
-                preparedStatement.setInt(4, horse.getOwnerId());
-                preparedStatement.setString(5, horse.getDietaryDescription());
-                preparedStatement.setString(6, horse.getTurnoutDescription());
-                preparedStatement.setString(7, horse.getOtherDetails());
+                preparedStatement.setInt(3, horse.getOwnerId());
+                preparedStatement.setString(4, horse.getDietaryDescription());
+                preparedStatement.setString(5, horse.getTurnoutDescription());
+                preparedStatement.setString(6, horse.getOtherDetails());
 
                 preparedStatement.executeUpdate();
+
+                ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+
+                if (generatedKeys.next()) {
+                    // Retrieve the auto-generated ID
+                    Integer lastInsertedId = generatedKeys.getInt(1);
+                    String avatar = saveImage(horse.getImage(), lastInsertedId);
+                    // Use lastInsertedId as needed
+                    System.out.println("Last Inserted ID: " + lastInsertedId);
+                } else {
+                    System.err.println("Failed to retrieve last inserted ID.");
+                }
+
             } catch (SQLException e) {
                 // Handle SQLException, log or rethrow as needed
                 e.printStackTrace();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
 
 
