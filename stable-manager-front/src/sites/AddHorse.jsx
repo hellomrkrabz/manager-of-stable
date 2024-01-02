@@ -45,7 +45,6 @@ function AddHorse() {
     };
 
     function submit() {
-        console.log("Data urodzenia:", birthday);
         axios.post("http://localhost:8080/horse/add", {
             name: name,
             birthDate: birthday,

@@ -64,9 +64,10 @@ public class DBManager {
                     'id' INTEGER UNIQUE PRIMARY KEY,
                     'clientName' STRING,
                     'trainerId' INTEGER,
-                    'group' BOOLEAN,
-                    'dateBegin' DATE,
-                    'dateEnd' DATE,
+                    'groupRide' INTEGER,
+                    'dateDay' STRING,
+                    'dateBegin' STRING,
+                    'dateEnd' STRING,
                     FOREIGN KEY (trainerId) REFERENCES 'users'(id)
             );""";
             String createCostTable = """
