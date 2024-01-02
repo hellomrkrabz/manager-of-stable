@@ -23,21 +23,6 @@ import org.springframework.util.Base64Utils;
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class })
 @Service
 public class HorseService {
-
-    private static void saveBase64ImageToFile(String base64Image, String filePath) throws IOException {
-        // Decode Base64 string to bytes
-        byte[] imageBytes = Base64.getDecoder().decode(base64Image);
-
-        // Write bytes to file
-        Path path = Paths.get(filePath);
-        Files.write(path, imageBytes);
-
-        // If you want to write to a binary image file, you can use FileOutputStream instead
-        // Uncomment the following lines if you want to write to a binary image file
-        // try (FileOutputStream fos = new FileOutputStream(filePath)) {
-        //     fos.write(imageBytes);
-        // }
-    }
     String saveImage(String image, Integer id) {
         try {
             String base64Image = image;
@@ -53,12 +38,11 @@ public class HorseService {
             // Specify the file path where you want to save the image
             System.out.println(System.getProperty("user.dir"));
             String filePath = "media" + File.separator + "id" + ".jpg";
-            String filePath2 = "media" + File.separator + "id" + ".txt";
+            String filePath2 = "media";
 
             // Write the bytes to a file
             Files.write(Paths.get(filePath), imageBytes, StandardOpenOption.CREATE);
-            saveBase64ImageToFile(base64Image, filePath2);
-            saveBase64toDisk(image, "halo");
+            saveBase64toDisk(image, "id.toString()", filePath2);
 
             // Rest of your logic...
             return ("Image saved successfully");
@@ -68,7 +52,7 @@ public class HorseService {
         }
     }
 
-    public void saveBase64toDisk(String image, String name) {
+    public void saveBase64toDisk(String image, String name, String filePath) {
         try {
             String base64Image;
             if (image.contains(",")) {
@@ -79,8 +63,7 @@ public class HorseService {
             byte[] imageBytes = javax.xml.bind.DatatypeConverter.parseBase64Binary(base64Image);
 
             String mediaPath = "D:\\code\\manager-of-stable\\media\\";
-            FileOutputStream fileOutPutStream = new FileOutputStream(mediaPath + name + ".jpg");
-
+            FileOutputStream fileOutPutStream = new FileOutputStream(filePath + name + ".jpg");
 
             fileOutPutStream.write(imageBytes);
             fileOutPutStream.close();
@@ -119,6 +102,8 @@ public class HorseService {
                 // Handle SQLException, log or rethrow as needed
                 e.printStackTrace();
             }
+
+
             //test
             System.out.println("Connection to SQLite has been established.");
 
