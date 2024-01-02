@@ -8,6 +8,7 @@ import Popup from "reactjs-popup";
 import def from "../media/horsie.jpg";
 import InputLabel from "@mui/material/InputLabel";
 import RidesComponent from "../components/RidesComponent";
+import { Form } from 'react-bootstrap';
 
 function getIdFromLink()
 {
@@ -136,7 +137,17 @@ function Rides(props) {
                     <div className="col-12 mt-5"  style={{ justifyContent: 'flex-center' }}>
                         <div className="container-fluid d-flex flex-column align-items-center">
                             <div className="row row col-11 py-3">
-                                <Button variant="outline-info" className="me-2 mb-5" onClick={() => {handlePageChange() }} id="submit" name="submit">Add ride</Button>
+                                <Button variant="outline-info" className="me-2 mb-2" onClick={() => {handlePageChange() }} id="submit" name="submit">Add ride</Button>
+                                <div className="box-width d-flex flex-column align-items-center mx-auto">
+
+                                    <div className="col-md-12 mb-4">
+                                        <Form.Group controlId="dob">
+                                            <Form.Label>Select Date</Form.Label>
+                                            <Form.Control type="date" name="dob" placeholder="Date of Birth" />
+                                        </Form.Group>
+                                    </div>
+
+                                </div>
                                 <div style={{ overflow: 'auto', height: '700px' }}>
                                     <RidesComponent visits={visitsToDisplay} setDetails={setDetails} setDisplayDetails={setDisplayDetails}/>
                                 </div>
