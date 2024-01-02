@@ -35,9 +35,9 @@ public class VisitService {
                     INSERT INTO visits (date, description, horseId, visitType) VALUES (?, ?, ?, ?)
             """;
 
-
+            System.out.println("visit date: "+visit.getDate());
             try (PreparedStatement preparedStatement = conn.prepareStatement(insertVisit)) {
-                preparedStatement.setDate(1, visit.getDate());
+                preparedStatement.setString(1, visit.getDate());
                 preparedStatement.setString(2, visit.getDescription());
                 preparedStatement.setInt(3, visit.getHorseId());
                 preparedStatement.setInt(4, visit.getVisitType());
@@ -132,7 +132,7 @@ public class VisitService {
                  ResultSet rs = preparedStatement.executeQuery()) {
 
                 visit.setId(rs.getInt("id"));
-                visit.setDate(rs.getDate("date"));
+                visit.setDate(rs.getString("date"));
                 visit.setVisitType(rs.getInt("visitType"));
                 visit.setDescription(rs.getString("description"));
                 visit.setHorseId(rs.getInt("horseId"));

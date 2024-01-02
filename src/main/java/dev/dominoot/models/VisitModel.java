@@ -9,11 +9,11 @@ public class VisitModel {
         this.id = id;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -42,7 +42,7 @@ public class VisitModel {
     }
 
     private Integer id;
-    private Date date;
+    private String date;
     private String description;
     private Integer horseId;
     private Integer visitType;

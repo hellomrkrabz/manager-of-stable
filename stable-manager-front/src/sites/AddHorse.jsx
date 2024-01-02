@@ -45,9 +45,10 @@ function AddHorse() {
     };
 
     function submit() {
+        console.log("Data urodzenia:", birthday);
         axios.post("http://localhost:8080/horse/add", {
             name: name,
-            birthday: birthday,
+            birthDate: birthday,
             image: avatar,
             ownerId: idKey,
             dietaryDescription: dietaryDescription,
@@ -65,6 +66,16 @@ function AddHorse() {
             return ("Username must contain at least 4 characters")
         else
             return ("An error occured")
+    }
+
+    function getDate(birthday) {
+        const dateObject = new Date(birthday);
+        const year = dateObject.getFullYear();
+        const month = (dateObject.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-indexed
+        const day = dateObject.getDate().toString().padStart(2, '0');
+
+        const formattedDate = `${year}-${month}-${day}`;
+        setBirthday(formattedDate);
     }
 
     return (
@@ -89,7 +100,7 @@ function AddHorse() {
                 </div>
                 <div className="col align-items-center row gy-2">
                     <div className={"button"}><TextField className={"button"} id="name" fullWidth label={"Name"} type={'text'} onChange={(e) => { setName(e.target.value) }}/></div>
-                    <div className={"button"}><TextField className={"button"} id="birthday" fullWidth label={"Birth date"} type={'date'} onChange={(e) => { setBirthday(e.target.value) }}/></div>
+                    <div className={"button"}><TextField className={"button"} id="birthday" fullWidth label={"Birth date"} type={'date'} onChange={(e) => { getDate(e.target.value) }}/></div>
                     <div className={"button"}><TextField className={"button"} id="dietaryDescription" fullWidth label={"Diet"} type={'text'} onChange={(e) => { setDietaryDescription(e.target.value) }}/></div>
                     <div className={"button"}><TextField className={"button"} id="turnoutDescription" fullWidth label={"Turnout"} type={'text'} onChange={(e) => { setTurnoutDescription(e.target.value) }}/></div>
                     <div className={"button"}><TextField className={"button"} id="otherDetails" fullWidth label={"Details"} type={'text'} onChange={(e) => { setOtherDetails(e.target.value) }}/></div>

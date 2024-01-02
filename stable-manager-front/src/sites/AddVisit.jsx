@@ -68,17 +68,6 @@ function AddVisit(props) {
             });
     }
 
-    function changeDetails() {
-        const url = "http://localhost:8080/horse/change/"+getIdFromLink();
-        axios.post(url, {
-            id: getIdFromLink(),
-            turnoutDescription: turnoutDescription,
-            dietaryDescription: dietaryDescription,
-            otherDetails: otherDetails
-        }).then((response) => {
-            setChangingDetails(!changingDetails);
-        });
-    }
     function getVisitData() {
 
         axios.get("http://localhost:8080/visit/data/" + getIdFromLink()).then((response) => {
@@ -102,32 +91,18 @@ function AddVisit(props) {
         });
     }
 
-    function addVisit() {
-        setOpen(true);
-        setPopup(<>
-                <div className=" text-center mb-4 font-test">Add Visit</div>
-                <Dropdown className={"test-testowy align-self-center"}>
-                    <Dropdown.Toggle variant="success" id="dropdown-basic">
-                        Visit type
-                    </Dropdown.Toggle>
+    function getDate(visitDate) {
+        const dateObject = new Date(visitDate);
+        const year = dateObject.getFullYear();
+        const month = (dateObject.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-indexed
+        const day = dateObject.getDate().toString().padStart(2, '0');
 
-                    <Dropdown.Menu>
-                        <Dropdown.Item onClick={(e) => {setVisitType(1)}}>Deworming</Dropdown.Item>
-                        <Dropdown.Item onClick={(e) => {setVisitType(2)}}>Vet visit</Dropdown.Item>
-                        <Dropdown.Item onClick={(e) => {setVisitType(3)}}>Farrier visit</Dropdown.Item>
-                    </Dropdown.Menu>
-                </Dropdown>
-                <div className={"button test-testowy"}><TextField className={"button"} id="visitDate" fullWidth label={"Visit date"} type={'date'} onChange={(e) => {setVisitDate(e.target.value)
-                }}/></div>
-
-                <div className={"text-center test-testowy"}><TextField className={"button"} id="details" fullWidth label={"Details"} type={'text'} onChange={(e) => { setDetails(e.target.value) }}/></div>
-                <Button variant="outline-info" className="me-2 mb-5" onClick={() => {submitVisit() }} id="submit" name="submit">Add visit</Button>
-            </>
-        );
+        const formattedDate = `${year}-${month}-${day}`;
+        setVisitDate(formattedDate);
+        console.log("data wizyty: "+visitDate)
     }
-    if (changingDetails===false) {
-        return (
 
+        return (
             <>
                 <div>
                     <Navbar site={"Register"}/>
@@ -146,7 +121,7 @@ function AddVisit(props) {
                             <Dropdown.Item onClick={(e) => {setVisitType(3)}}>Farrier visit</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
-                    <div className={"button test-testowy"}><TextField className={"button"} id="visitDate" fullWidth label={"Visit date"} type={'date'} onChange={(e) => {setVisitDate(e.target.value)
+                    <div className={"button test-testowy"}><TextField className={"button"} id="visitDate" fullWidth label={"Visit date"} type={'date'} onChange={(e) => {getDate(e.target.value)
                     }}/></div>
 
                     <div className={"text-center test-testowy"}><TextField className={"button"} id="details" fullWidth label={"Details"} type={'text'} onChange={(e) => { setDetails(e.target.value) }}/></div>
@@ -156,6 +131,5 @@ function AddVisit(props) {
                 </>
         );
     }
-}
 
 export default AddVisit;

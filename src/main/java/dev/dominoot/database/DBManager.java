@@ -41,7 +41,7 @@ public class DBManager {
                     CREATE TABLE 'horses' (
                     'id' INTEGER UNIQUE PRIMARY KEY,
                     'name' STRING,
-                    'birthday' DATE,
+                    'birthday' STRING,
                     'image' STRING,
                     'ownerId' INTEGER,
                     'dietaryDescription' STRING,
@@ -53,7 +53,7 @@ public class DBManager {
             String createVisitTable = """
                     CREATE TABLE 'visits' (
                     'id' INTEGER UNIQUE PRIMARY KEY,
-                    'date' DATE,
+                    'date' STRING,
                     'description' STRING,
                     'horseId' INTEGER,
                     'visitType' INTEGER,

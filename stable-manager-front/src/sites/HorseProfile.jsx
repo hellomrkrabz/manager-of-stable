@@ -59,19 +59,32 @@ function HorseProfile(props) {
         console.log(visits);
     },[visits])
     function getData() {
-
         axios.get("http://localhost:8080/horse/data/" + getIdFromLink()).then((response) => {
-            console.log(response.data.name);
             setName(response.data.name);
-            setBirthday(response.data.birthday);
+            setBirthday(response.data.birthDate);
             setTurnoutDescription(response.data.turnoutDescription);
             setDietaryDescription(response.data.dietaryDescription);
             setOtherDetails(response.data.otherDetails);
+            setAvatar("data:image/jpeg;base64," + response.data.image);
         })
             .catch((error) => {
                 console.error("Error fetching data:", error);
             });
     }
+
+    const handleFileUpload = (e) => {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+
+        reader.onloadend = () => {
+            const imageUrl = reader.result;
+            setAvatar(imageUrl);
+        };
+
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    };
 
     function changeDetails() {
         const url = "http://localhost:8080/horse/change/"+getIdFromLink();
@@ -79,7 +92,8 @@ function HorseProfile(props) {
             id: getIdFromLink(),
             turnoutDescription: turnoutDescription,
             dietaryDescription: dietaryDescription,
-            otherDetails: otherDetails
+            otherDetails: otherDetails,
+            image: avatar
         }).then((response) => {
             setChangingDetails(!changingDetails);
         });
@@ -194,6 +208,7 @@ else {
                                 }
                                 alt="Horse"
                             /></div>
+                        <input type="file" onChange={(e) => handleFileUpload(e)}/>
                     </div>
                     <div className="col align-items-center row gy-2">
                         <div className={"button"}><InputLabel htmlFor="birthday">Birthday</InputLabel><TextField className={"button"} id="birthday" fullWidth type={'date'} value={birthday}/></div>
@@ -218,10 +233,11 @@ else {
                                 </div>
                             </Popup>
                             <div style={{ overflow: 'auto', height: '700px' }}>
-                                {visits.map((r)=><VisitComponent {...r}/>)}
-                                {visits.length===0 &&
-                                    <div>Nothing here</div>
-                                }
+                                <VisitsComponent visits={visitsToDisplay} setDetails={setDetails} setDisplayDetails={setDisplayDetails}/>
+                                {/*{visits.map((r)=><VisitComponent {...r}/>)}*/}
+                                {/*{visits.length===0 &&*/}
+                                {/*    <div>Nothing here</div>*/}
+                                {/*}*/}
                             </div>
                         </div>
                     </div>

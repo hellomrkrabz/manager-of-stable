@@ -19,11 +19,11 @@ public class HorseModel {
         this.name = name;
     }
 
-    public Date getBirthDate() {
+    public String getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
     }
 
@@ -69,7 +69,7 @@ public class HorseModel {
 
     private Integer id;
     private String name;
-    private Date birthDate;
+    private String birthDate;
     private String image;
     private Integer ownerId;
     private String dietaryDescription;

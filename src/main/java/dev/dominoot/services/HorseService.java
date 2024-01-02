@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -88,13 +89,13 @@ public class HorseService {
             String insertUser = """
                     INSERT INTO horses (name, birthday, ownerId, dietaryDescription, turnoutDescription, otherDetails) VALUES (?, ?, ?, ?, ?, ?)
             """;
-
+            System.out.println("data urodzenia konia: "+ horse.getBirthDate());
 
             try (PreparedStatement preparedStatement = conn.prepareStatement(insertUser)) {
 
                 System.out.println(horse.getName());
                 preparedStatement.setString(1, horse.getName());
-                preparedStatement.setDate(2, horse.getBirthDate());
+                preparedStatement.setString(2, horse.getBirthDate());
                 preparedStatement.setInt(3, horse.getOwnerId());
                 preparedStatement.setString(4, horse.getDietaryDescription());
                 preparedStatement.setString(5, horse.getTurnoutDescription());
@@ -189,6 +190,20 @@ public class HorseService {
         return horses;
     }
 
+    public static String getImage64(Integer id) {
+        String filePath = "media" + File.separator + id.toString() + ".jpg";
+        String base64String = "";
+        try {
+            byte[] fileContent = Files.readAllBytes(Paths.get(filePath));
+
+            base64String = Base64.getEncoder().encodeToString(fileContent);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return base64String;
+    }
+
     public HorseModel readHorse(Integer id) {
         Connection conn = null;
         ResultSet resultSet = null;
@@ -208,11 +223,11 @@ public class HorseService {
 
                 horse.setId(rs.getInt("id"));
                 horse.setName(rs.getString("name"));
-                horse.setBirthDate(rs.getDate("birthday"));
+                horse.setBirthDate(rs.getString("birthday"));
                 horse.setDietaryDescription(rs.getString("dietaryDescription"));
                 horse.setTurnoutDescription(rs.getString("turnoutDescription"));
                 horse.setOtherDetails(rs.getString("otherDetails"));
-                horse.setImage(rs.getString("image"));
+                horse.setImage(getImage64(horse.getId()));
                 horse.setOwnerId(rs.getInt("ownerId"));
                 rs.close();
                 return horse;
@@ -251,14 +266,12 @@ public class HorseService {
             try (PreparedStatement preparedStatement = conn.prepareStatement(updateHorse)) {
 
                 if (horse != null) {
-                    System.out.println("ten id: " + horse.getId());
-                    System.out.println("ten diet: " + horse.getDietaryDescription());
-
                     preparedStatement.setString(1, horse.getDietaryDescription());
                     preparedStatement.setString(2, horse.getTurnoutDescription());
                     preparedStatement.setString(3, horse.getOtherDetails());
                     preparedStatement.setInt(4, horse.getId());
                     preparedStatement.executeUpdate();
+                    saveImage(horse.getImage(), horse.getId());
                 }
                 else {
                     return ("Horse not found");
@@ -266,6 +279,8 @@ public class HorseService {
             } catch (SQLException e) {
                 // Handle SQLException, log or rethrow as needed
                 e.printStackTrace();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
             //test
             System.out.println("Connection to SQLite has been established.");

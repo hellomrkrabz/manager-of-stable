@@ -24,7 +24,7 @@ function VisitComponent(props, details) {
     return (
         <>
             <div className="row rounded py-3 visit-box mt-2">
-                <div className="col-3 fs-3">{("0" + date.getDay()).slice(-2) + "." + ("0" + (date.getMonth()+1)).slice(-2)  + "." + date.getFullYear() }</div>
+                <div className="col-3 fs-3">{props.details.date }</div>
                 <div className="col-3 fs-3">{setVisitType()}</div>
                 <div className="col-3 fs-3">{props.details.description}</div>
                 <div className="col-3 d-flex justify-content-start">
