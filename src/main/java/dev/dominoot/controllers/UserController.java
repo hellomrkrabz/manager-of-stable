@@ -64,6 +64,17 @@ public class UserController {
         }
     }
 
+    @GetMapping("/dataID/{id}")
+    public ResponseEntity<UserModel> getUserDataId(@PathVariable Integer id) {
+        try {
+            UserModel user = userService.readUserId(id);
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();  // Log the exception
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PostMapping("/change/{username}")
     public ResponseEntity<String> updateUser(@PathVariable String username, @RequestBody UserModel user) {
         try {

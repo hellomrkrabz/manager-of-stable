@@ -176,12 +176,8 @@ if (changingDetails===false) {
                                 </div>
                             </div>
                         </Popup>
-                    <div style={{ overflow: 'auto', height: '700px' }}>
+                        <div className="overflow-auto" style={{ maxHeight: '65vh' }}>
                         <VisitsComponent visits={visitsToDisplay} setDetails={setDetails} setDisplayDetails={setDisplayDetails}/>
-                        {/*{visits.map((r)=><VisitComponent {...r}/>)}*/}
-                        {/*{visits.length===0 &&*/}
-                        {/*    <div>Nothing here</div>*/}
-                        {/*}*/}
                     </div>
                 </div>
                 </div>

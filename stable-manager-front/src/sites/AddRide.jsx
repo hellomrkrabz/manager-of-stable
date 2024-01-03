@@ -14,7 +14,7 @@ function AddRide(props) {
     const [dateBegin, setDateBegin] = useState("");
     const [dateEnd, setDateEnd] = useState("");
     const [dateDay, setDateDay] = useState("");
-    const [group, setGroup] = useState("");
+    const [group, setGroup] = useState(0);
     const idKey = getCookie("idKey");
 
     useEffect(() => {
