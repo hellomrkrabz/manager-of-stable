@@ -16,6 +16,8 @@ import HorseProfile from "./sites/HorseProfile";
 import AddVisit from "./sites/AddVisit";
 import Rides from "./sites/Rides";
 import AddRide from "./sites/AddRide";
+import Costs from "./sites/Costs";
+import AddCost from "./sites/AddCost";
 
 var sessionUserKey = getCookie("sessionUserKey");
 var usernameKey = getCookie("usernameKey");
@@ -62,6 +64,14 @@ function App() {
       {
         path: '/AddRide',
         element: <AddRide/>
+      },
+      {
+        path: '/Costs',
+        element: <Costs/>
+      },
+      {
+        path: '/AddCost',
+        element: <AddCost/>
       }
     ]
 

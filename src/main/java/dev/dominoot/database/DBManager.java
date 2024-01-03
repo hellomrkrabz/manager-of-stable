@@ -76,6 +76,7 @@ public class DBManager {
                     'amount' INTEGER,
                     'title' STRING,
                     'description' STRING,
+                    'dateDay' STRING,
                     'managerId' INTEGER,
                     FOREIGN KEY (managerId) REFERENCES 'users'(id)
             );""";

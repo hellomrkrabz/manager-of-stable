@@ -16,6 +16,17 @@ import org.json.JSONObject;
 @Service
 public class UserService {
 
+    public Integer setRole(Integer size) {
+        int role;
+        if(size == 0)
+        {
+            role = 1;
+        }
+        else {
+            role = 5;
+        }
+        return role;
+    }
     public String saveUser(UserModel user) {
         Connection conn = null;
         try {
@@ -30,13 +41,15 @@ public class UserService {
 
             try (PreparedStatement preparedStatement = conn.prepareStatement(insertUser)) {
 
+                List<Map<String, Object>> users = this.readUsers();
+
                 System.out.println(user.getUsername());
+
                 preparedStatement.setString(1, user.getUsername());
                 preparedStatement.setString(2, user.getPassword());
                 preparedStatement.setString(3, user.getEmail());
-                preparedStatement.setInt(4, user.getRole());
+                preparedStatement.setInt(4, setRole(users.size()));
 
-                List<Map<String, Object>> users = this.readUsers();
                 for (int u = 0; u < users.size(); u++) {
                     Map<String, Object> userInDB = users.get(u);
                     if (user.getUsername().equals(userInDB.get("username"))) {
