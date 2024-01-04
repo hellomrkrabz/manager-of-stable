@@ -42,7 +42,7 @@ function Login() {
             setPopup(response.data.message);
             if(response.data.message === "Logged in")
             {
-                window.location.replace("/");
+                window.location.replace("/Profile");
                 document.cookie = "sessionUserKey="+response.data.id+"; SameSite=None; Secure";
                 document.cookie = "usernameKey="+username+"; SameSite=None; Secure";
                 document.cookie ="idKey="+response.data.id+"; SameSite=None; Secure";
