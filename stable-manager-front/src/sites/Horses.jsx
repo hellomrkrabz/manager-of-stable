@@ -11,7 +11,10 @@ import Popup from 'reactjs-popup';
 import Textfield from '@mui/material/TextField'
 import axios from "axios"
 import getCookie from "../scripts/cookie";
+import Button from "react-bootstrap/Button";
 
+var roleKey = Number(getCookie("roleKey"));
+var idKey = Number(getCookie("idKey"));
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -59,34 +62,45 @@ var sessionUserKey= getCookie("sessionUserKey")
 function Horses(props) {
 
     const [horses, setHorses] = useState([])
-    const [filteredOpinions, setFilteredOpinions] = useState([])
+    const [filteredHorses, setFilteredHorses] = useState([])
     const [horsesToDisplay, setHorsesToDisplay] = useState(horses)
     const [filter, setFilter] = useState({user:"", sort:"newest"})
     const [pageNumber, setPageNumber] = useState(0)
     const [details ,setDetails] = useState({user:"", date:"", score:0, content:"", opinion_id:-1})
     const [displayDetails, setDisplayDetails] = useState(false)
 
-    // async function fetchOpinion()
-    // {
-    //     const response = await axios.get("http://localhost:8080/horse/all")
-    //     let fetchedOpinions = response.data
-    //
-    //     setHorses(fetchedOpinions)
-    // }
-
-    async function fetchOpinion() {
+    async function fetchHorses() {
         try {
             const response = await axios.get('http://localhost:8080/horse/all');
-            const fetchedOpinions = response.data;
-            setHorses(fetchedOpinions);
-            setFilteredOpinions(fetchedOpinions);
+            const fetchedHorses = response.data;
+            setHorses(fetchedHorses);
+            setFilteredHorses(fetchedHorses);
         } catch (error) {
             console.error('Error fetching opinions:', error);
         }
     }
 
+    async function fetchOwnerHorses() {
+        try {
+            const response = await axios.get('http://localhost:8080/horse/ownersHorses/'+idKey);
+            const fetchedHorses = response.data;
+            setHorses(fetchedHorses);
+            setFilteredHorses(fetchedHorses);
+        } catch (error) {
+            console.error('Error fetching opinions:', error);
+        }
+    }
+
+    const handlePageChange = () => {
+        window.location.replace("/AddHorse");
+    };
+
     useEffect(() => {
-        fetchOpinion()
+        if (roleKey === 3) {
+        fetchOwnerHorses()}
+        else {
+            fetchHorses()
+        }
     }, []);
 
     useEffect(() => {
@@ -94,16 +108,19 @@ function Horses(props) {
         {
             let noe=20;
             let offset=pageNumber*noe;
-            setHorsesToDisplay(filteredOpinions.slice(offset,offset+noe))
+            setHorsesToDisplay(filteredHorses.slice(offset,offset+noe))
         }
-    }, [filteredOpinions,pageNumber]);
+    }, [filteredHorses,pageNumber]);
 
-
+if (roleKey === 1 || roleKey === 3) {
     return (
         <>
             <div>
                 <Navbar site={"Register"}/>
             </div>
+            <div className="row row col-12 py-3">
+            <Button variant="outline-info" className="me-2 " onClick={() => {handlePageChange() }} id="submit" name="submit">Add Horse</Button>
+                </div>
             <div className="container-fluid h-100">
                 <div className="row h-100">
                     <div className="col-12">
@@ -112,7 +129,23 @@ function Horses(props) {
                 </div>
             </div>
         </>
-    );
+    );}
+
+    else {
+        return (
+            <>
+                <div>
+                    <Navbar site={"Register"}/>
+                </div>
+                <div className="container-fluid h-100">
+                    <div className="row h-100">
+                        <div className="col-12">
+                            <HorsesComponent horses={horsesToDisplay} setDetails={setDetails} setDisplayDetails={setDisplayDetails}/>
+                        </div>
+                    </div>
+                </div>
+            </>
+        );}
 }
 
 export default Horses;

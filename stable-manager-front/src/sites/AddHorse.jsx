@@ -11,6 +11,7 @@ import '../scripts/cookie'
 import '../AddHorse.css'
 import def from '../media/horsie.jpg'
 import getCookie from "../scripts/cookie";
+import { z } from "zod";
 function AddHorse() {
     const [name, setName] = useState("");
     const [dietaryDescription, setDietaryDescription] = useState("");
@@ -24,6 +25,67 @@ function AddHorse() {
     const closeModal = () => setOpen(false);
 
     const idKey = getCookie("idKey");
+
+    const data = {
+        name: name,
+        birthday: birthday,
+        dietaryDescription: dietaryDescription,
+        turnoutDescription: turnoutDescription,
+        otherDetails: otherDetails,
+        avatar: avatar
+    }
+
+    const schema = z.object({
+        name: z.string().min(2),
+        birthday:z.string().regex(new RegExp('^\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01])$')),
+        dietaryDescription: z.string().min(2),
+        turnoutDescription: z.string().min(2),
+        otherDetails: z.string().min(2),
+        avatar: z.string().min(5)
+    });
+
+
+
+    function validate() {
+        if (avatar !== "/static/media/horsie.f6355596ea3d9ab63fd9.jpg"){
+        try {schema.parse(data);
+            submit();
+        }
+        catch (err) {
+            if (err instanceof z.ZodError) {
+                console.log(err.issues);
+
+                let mes = err.issues.map((error) => error.message).join("\n");
+                console.log(mes);
+                let errorMes = changeMessage(mes);
+                setPopup(errorMes);
+                setOpen(true);
+            }
+        }}
+        else {
+            let errorMes = changeMessage("No image provided");
+            setPopup(errorMes);
+            setOpen(true);
+        }
+    }
+
+    function changeMessage(input) {
+        if (input.startsWith("Expected number"))
+            return ("Expected number")
+        else if (input.startsWith("String must contain at least 2 character(s)"))
+            return ("String must contain at least 2 character(s)")
+        else if (input.startsWith("Expected date"))
+            return ("Expected date")
+        else if (input.startsWith("Invalid date format. Please use YYYY-MM-DD"))
+            return ("Invalid date format. Please use YYYY-MM-DD.")
+        else if (input.startsWith("Number must be greater than 0"))
+            return ("Number must be greater than 0")
+        else if (input.startsWith("Invalid"))
+            return ("No date provided")
+        else
+            return (input)
+    }
+
 
     useEffect(() => {
         console.log('valueOfPopup changed:', valueOfPopup);
@@ -60,13 +122,6 @@ function AddHorse() {
         });
     }
 
-    function changeMessage(input) {
-        if (input.startsWith("String must contain at least 4 character(s)"))
-            return ("Username must contain at least 4 characters")
-        else
-            return ("An error occured")
-    }
-
     function getDate(birthday) {
         const dateObject = new Date(birthday);
         const year = dateObject.getFullYear();
@@ -99,11 +154,12 @@ function AddHorse() {
                 </div>
                 <div className="col align-items-center row gy-2">
                     <div className={"button"}><TextField className={"button"} id="name" fullWidth label={"Name"} type={'text'} onChange={(e) => { setName(e.target.value) }}/></div>
-                    <div className={"button"}><TextField className={"button"} id="birthday" fullWidth label={"Birth date"} type={'date'} onChange={(e) => { getDate(e.target.value) }}/></div>
+                    <div>Birthday</div>
+                    <div className={"button"}><TextField className={"button"} id="birthday" fullWidth type={'date'} onChange={(e) => { getDate(e.target.value) }}/></div>
                     <div className={"button"}><TextField className={"button"} id="dietaryDescription" fullWidth label={"Diet"} type={'text'} onChange={(e) => { setDietaryDescription(e.target.value) }}/></div>
                     <div className={"button"}><TextField className={"button"} id="turnoutDescription" fullWidth label={"Turnout"} type={'text'} onChange={(e) => { setTurnoutDescription(e.target.value) }}/></div>
                     <div className={"button"}><TextField className={"button"} id="otherDetails" fullWidth label={"Details"} type={'text'} onChange={(e) => { setOtherDetails(e.target.value) }}/></div>
-                    <Button variant="outline-info" className="me-2 mb-5" onClick={() => { submit() }} id="submit" name="submit">Add horse</Button>
+                    <Button variant="outline-info" className="me-2 mb-5" onClick={() => { validate() }} id="submit" name="submit">Add horse</Button>
                     <Popup open={open} closeOnDocumentClick onClose={() => setOpen(false)}>
                         <div className="modal">
                             <div className="d-flex justify-content-center align-items-center">

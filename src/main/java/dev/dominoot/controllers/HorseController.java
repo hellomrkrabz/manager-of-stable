@@ -39,6 +39,18 @@ public class HorseController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/ownersHorses/{ownerId}")
+    public ResponseEntity<List<Map<String, Object>>> readHorsesFromOwner(@PathVariable Integer ownerId) {
+        try {
+            List<Map<String, Object>> horses = horseService.readHorsesFromOwner(ownerId);
+            return new ResponseEntity<>(horses, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();  // Log the exception
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @GetMapping("/data/{id}")
     public ResponseEntity<HorseModel> getUserData(@PathVariable Integer id) {
         try {

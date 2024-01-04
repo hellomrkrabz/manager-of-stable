@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
-import horsie from './../media/horsie.jpg'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHorse } from "@fortawesome/free-solid-svg-icons";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container"
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import {NavLink} from "react-router-dom";
+import getCookie from "../scripts/cookie";
 
 const Header = (props) => {
-    console.log("logged " + props)
+    var roleKey = Number(getCookie("roleKey"));
     return (
         <Navbar bg="dark" variant="dark" expand="lg">
             <Container fluid>
@@ -23,9 +22,6 @@ const Header = (props) => {
                         style={{maxHeight: '100px'}}
                         navbarScroll
                     >
-
-                        {/*<NavLink className ="nav-link" to="/Register">Register</NavLink>*/}
-                        {/*<NavLink className ="nav-link" to="/Login">Login</NavLink>*/}
                     </Nav>
                     {props.site === "Login" &&
                         <Button variant="outline-info" className="me-2" onClick={()=>{window.location.href="/Register"}}>Register</Button>

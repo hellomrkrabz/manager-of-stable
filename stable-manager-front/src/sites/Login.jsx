@@ -46,8 +46,21 @@ function Login() {
                 document.cookie = "sessionUserKey="+response.data.id+"; SameSite=None; Secure";
                 document.cookie = "usernameKey="+username+"; SameSite=None; Secure";
                 document.cookie ="idKey="+response.data.id+"; SameSite=None; Secure";
+                getRoleOfUser();
             }
         });
+    }
+
+    function getRoleOfUser() {
+        const url = "http://localhost:8080/api/data/"+username;
+        axios.get(url)
+            .then((response) => {
+                document.cookie ="roleKey="+response.data.role+"; SameSite=None; Secure";
+                console.log("TA ROLA "+response.data.role)
+            })
+            .catch((error) => {
+                console.error("Error fetching data:", error);
+            });
     }
 
     function validate() {

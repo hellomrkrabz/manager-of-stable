@@ -190,6 +190,63 @@ public class HorseService {
         return horses;
     }
 
+    public List<Map<String, Object>> readHorsesFromOwner(Integer ownerId) {
+        Connection conn = null;
+        List<Map<String, Object>> horses = new ArrayList<Map<String, Object>>();
+        try {
+
+            PreparedStatement preparedStatement = null;
+
+
+            String url = "jdbc:sqlite:D:/code/manager-of-stable/db/stable.db";
+            conn = DriverManager.getConnection(url);
+            DatabaseMetaData databaseMetaData = conn.getMetaData();
+
+            String readHorses = """
+                    SELECT * FROM horses WHERE ownerId = ?
+            """;
+
+            preparedStatement = conn.prepareStatement(readHorses);
+
+            preparedStatement.setInt(1, ownerId);
+
+            try (Statement stmt = conn.createStatement();
+                 ResultSet rs = preparedStatement.executeQuery()) {
+                ResultSetMetaData metaData = rs.getMetaData();
+                int columnCount = metaData.getColumnCount();
+
+                while (rs.next()) {
+                    Map<String, Object> horse = new HashMap<>();
+
+                    for (int i = 1; i <= columnCount; i++) {
+                        String columnName = metaData.getColumnName(i);
+                        Object columnValue = rs.getObject(i);
+                        horse.put(columnName, columnValue);
+                    }
+
+                    horses.add(horse);
+                }
+            } catch (SQLException e) {
+                // Handle SQLException, log or rethrow as needed
+                e.printStackTrace();
+            }
+            //test
+            System.out.println("Connection to SQLite has been established.");
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        return horses;
+    }
+
     public static String getImage64(Integer id) {
         String filePath = "media" + File.separator + id.toString() + ".jpg";
         String base64String = "";

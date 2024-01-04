@@ -22,8 +22,12 @@ import AddCost from "./sites/AddCost";
 var sessionUserKey = getCookie("sessionUserKey");
 var usernameKey = getCookie("usernameKey");
 var idKey = getCookie("idKey");
+var roleKey = Number(getCookie("roleKey"));
 function App() {
+  console.log("roleKey: "+roleKey)
+  console.log("roleKey type: "+typeof(roleKey))
   if (sessionUserKey !== undefined) {
+    if (roleKey === 1) {
     var routes = [
       {
         path: '/',
@@ -73,7 +77,123 @@ function App() {
         path: '/AddCost',
         element: <AddCost/>
       }
-    ]
+    ]}
+    else if (roleKey === 2) {
+      var routes = [
+        {
+          path: '/',
+          element: <FrontPage Logged={true}/>
+        },
+        {
+          path: '/Profile',
+          element: <Profile Logged={true}/>
+        },
+        {
+          path: '/Logout',
+          element: <Logout/>
+        },
+        {
+          path: '/Horses',
+          element: <Horses/>
+        },
+        {
+          path: '/HorseProfile/:id',
+          element: <HorseProfile/>
+        },
+        {
+          path: '/Rides',
+          element: <Rides/>
+        },
+        {
+          path: '/AddRide',
+          element: <AddRide/>
+        }
+      ]
+    }
+    else if (roleKey === 3) {
+      var routes = [
+        {
+          path: '/',
+          element: <FrontPage Logged={true}/>
+        },
+        {
+          path: '/Profile',
+          element: <Profile Logged={true}/>
+        },
+        {
+          path: '/Logout',
+          element: <Logout/>
+        },
+        {
+          path: '/AddHorse',
+          element: <AddHorse/>
+        },
+        {
+          path: '/Horses',
+          element: <Horses/>
+        },
+        {
+          path: '/HorseProfile/:id',
+          element: <HorseProfile/>
+        },
+        {
+          path: '/AddVisit/:id',
+          element: <AddVisit/>
+        }
+      ]
+    }
+    else if (roleKey === 4) {
+      var routes = [
+        {
+          path: '/',
+          element: <FrontPage Logged={true}/>
+        },
+        {
+          path: '/Profile',
+          element: <Profile Logged={true}/>
+        },
+        {
+          path: '/Logout',
+          element: <Logout/>
+        },
+        {
+          path: '/Horses',
+          element: <Horses/>
+        },
+        {
+          path: '/HorseProfile/:id',
+          element: <HorseProfile/>
+        },
+        {
+          path: '/AddVisit/:id',
+          element: <AddVisit/>
+        },
+        {
+          path: '/Costs',
+          element: <Costs/>
+        },
+        {
+          path: '/AddCost',
+          element: <AddCost/>
+        }
+      ]
+    }
+    else {
+      var routes = [
+        {
+          path: '/',
+          element: <FrontPage Logged={true}/>
+        },
+        {
+          path: '/Profile',
+          element: <Profile Logged={true}/>
+        },
+        {
+          path: '/Logout',
+          element: <Logout/>
+        }
+      ]
+    }
 
   }
   else {
@@ -92,7 +212,7 @@ function App() {
       element: <Login />,
     }
   ];}
-
+console.log(routes)
   return(
       <BrowserRouter>
         <Router routes={routes} />

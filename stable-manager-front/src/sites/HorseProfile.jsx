@@ -15,7 +15,9 @@ import InputLabel from "@mui/material/InputLabel";
 import HorsesComponent from "../components/HorsesComponent";
 import VisitsComponent from "../components/VisitsComponent";
 import horses from "./Horses";
+import getCookie from "../scripts/cookie";
 
+var roleKey = Number(getCookie("roleKey"));
 function getIdFromLink()
 {
     const pathParts = window.location.pathname.split('/')
@@ -134,6 +136,7 @@ function HorseProfile(props) {
         const handlePageChange = () => {
             window.location.replace("/AddVisit/"+getIdFromLink());
         };
+    if (roleKey === 3) {
 if (changingDetails===false) {
     return (
 
@@ -230,18 +233,95 @@ else {
                             </Popup>
                             <div style={{ overflow: 'auto', height: '700px' }}>
                                 <VisitsComponent visits={visitsToDisplay} setDetails={setDetails} setDisplayDetails={setDisplayDetails}/>
-                                {/*{visits.map((r)=><VisitComponent {...r}/>)}*/}
-                                {/*{visits.length===0 &&*/}
-                                {/*    <div>Nothing here</div>*/}
-                                {/*}*/}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </>
-    );
+    );}
 }
+    else if(roleKey === 1 || roleKey === 4){
+        return (
+
+            <>
+                <div>
+                    <Navbar site={"Register"}/>
+                </div>
+                <div className="d-flex justify-content-between">
+                    <div className="horse-box-left d-flex flex-column align-items-center" style={{ height: '94vh' }}>
+                        <div className="fs-1 text-center mb-4 font-test">{name}</div>
+
+                        <div className="wrapper">
+                            <div className="btnimg">
+                                <img
+                                    src={avatar}
+                                    style={{width: 200, height: 200, borderRadius: 200/ 2, marginBottom: 20}
+                                    }
+                                    alt="Horse"
+                                /></div>
+                        </div>
+                        <div className="col align-items-center row gy-2">
+                            <div className={"button"}><InputLabel htmlFor="birthday">Birthday</InputLabel><TextField className={"button"} id="birthday" fullWidth type={'date'} value={birthday}/></div>
+                            <div className={"button"}><InputLabel htmlFor="dietaryDescription">Dietary Description</InputLabel><TextField className={"button"} id="dietaryDescription" fullWidth type={'text'} value={dietaryDescription}/></div>
+                            <div className={"button"}><InputLabel htmlFor="turnoutDescription">Turnout Description</InputLabel><TextField className={"button"} id="turnoutDescription" fullWidth type={'text'} value={turnoutDescription}/></div>
+                            <div className={"button"}><InputLabel htmlFor="otherDetails">Details</InputLabel><TextField className={"button"} id="otherDetails" fullWidth type={'text'} value={otherDetails}/></div>
+                        </div>
+                    </div>
+                    <div className="col-9 mt-5"  style={{ justifyContent: 'flex-end' }}>
+                        <div className="container-fluid d-flex flex-column align-items-center">
+                            <div className="row row col-11 py-3">
+                                <Button variant="outline-info" className="me-2 mb-5" onClick={() => {handlePageChange() }} id="submit" name="submit">Add visit</Button>
+                                <div className="overflow-auto" style={{ maxHeight: '65vh' }}>
+                                    <VisitsComponent visits={visitsToDisplay} setDetails={setDetails} setDisplayDetails={setDisplayDetails}/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </>
+        );
+    }
+    else {
+        return (
+
+            <>
+                <div>
+                    <Navbar site={"Register"}/>
+                </div>
+                <div className="d-flex justify-content-between">
+                    <div className="horse-box-left d-flex flex-column align-items-center" style={{ height: '94vh' }}>
+                        <div className="fs-1 text-center mb-4 font-test">{name}</div>
+
+                        <div className="wrapper">
+                            <div className="btnimg">
+                                <img
+                                    src={avatar}
+                                    style={{width: 200, height: 200, borderRadius: 200/ 2, marginBottom: 20}
+                                    }
+                                    alt="Horse"
+                                /></div>
+                        </div>
+                        <div className="col align-items-center row gy-2">
+                            <div className={"button"}><InputLabel htmlFor="birthday">Birthday</InputLabel><TextField className={"button"} id="birthday" fullWidth type={'date'} value={birthday}/></div>
+                            <div className={"button"}><InputLabel htmlFor="dietaryDescription">Dietary Description</InputLabel><TextField className={"button"} id="dietaryDescription" fullWidth type={'text'} value={dietaryDescription}/></div>
+                            <div className={"button"}><InputLabel htmlFor="turnoutDescription">Turnout Description</InputLabel><TextField className={"button"} id="turnoutDescription" fullWidth type={'text'} value={turnoutDescription}/></div>
+                            <div className={"button"}><InputLabel htmlFor="otherDetails">Details</InputLabel><TextField className={"button"} id="otherDetails" fullWidth type={'text'} value={otherDetails}/></div>
+                        </div>
+                    </div>
+                    <div className="col-9 mt-5"  style={{ justifyContent: 'flex-end' }}>
+                        <div className="container-fluid d-flex flex-column align-items-center">
+                            <div className="row row col-11 py-3">
+                                <div className="overflow-auto" style={{ maxHeight: '65vh' }}>
+                                    <VisitsComponent visits={visitsToDisplay} setDetails={setDetails} setDisplayDetails={setDisplayDetails}/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </>
+        );
+    }
 }
 
 export default HorseProfile;
