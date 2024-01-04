@@ -87,6 +87,27 @@ public class UserController {
         }
     }
 
+    @GetMapping("/unassignedUsers")
+    public ResponseEntity<UserModel> getUnassignedUsers() {
+        try {
+            UserModel user = userService.readUnassignedUsers();
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();  // Log the exception
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
+    @PostMapping("/switchRole/{username}")
+    public ResponseEntity<String> switchRole(@PathVariable String username, @RequestBody UserModel user) {
+        try {
+            String response = userService.switchRole(user);
+            return ResponseEntity.ok(response);
+        }
+        catch (Exception e) {
+            e.printStackTrace();  // Log the exception
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
 

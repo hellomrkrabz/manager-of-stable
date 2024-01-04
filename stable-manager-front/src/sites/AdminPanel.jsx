@@ -1,67 +1,96 @@
-import React, { useEffect, useState } from 'react'
-import Navbar from '../components/navbar'
-import background from '../media/background.jpg'
-import axios from 'axios'
-import '../AdminPanel.css'
-import getCookie from "../scripts/cookie";
-import userToVerify from "../components/UserToVerify";
-import UserToVerify from "../components/UserToVerify";
-import {v4} from 'uuid';
+import React, { useEffect, useState } from "react";
+import Navbar from "./../components/navbar"
+import axios from "axios"
+import UsersComponent from "../components/UsersComponent";
 
 function AdminPanel(props) {
-    const cookieExists = getCookie("sessionUserKey");
-    let cos = false;
-    const [users, setUsers] = useState([])
-    const [displayDetails, setDisplayDetails] = useState(false)
-    const [user, setUser] = useState()
+
+    const [users, setUsers] = useState([]);
+    const [usersToDisplay, setUsersToDisplay] = useState(users)
+    const [isEmpty, setIsEmpty] = useState(1)
 
     useEffect(() => {
-        getData();
+        getUsersData();
     }, []);
-    function getData() {
-        const url = "http://localhost:8080/api/data/";//+usernameKey;
-        axios.get(url)
-            .then((response) => {
-               // setUsername(response.data.username);
-               // setPassword(response.data.password);
-               // setEmail(response.data.email);
-               // setId(response.data.id);
-            })
+
+    useEffect(()=>{
+        console.log("users: "+ users);
+    },[users])
+
+    function getUsersData() {
+
+        axios.get("http://localhost:8080/api/unassignedUsers").then((response) => {
+            console.log("response: "+ response.data)
+            setUsers([response.data]);
+            if (response.data !== "")
+            {
+                setIsEmpty(0)
+            }
+        })
             .catch((error) => {
                 console.error("Error fetching data:", error);
             });
     }
 
-    if (cookieExists != null)
-    {
-        cos = true;
-    }
+    useEffect(() => {
+        if(users.length > 0)
+        {
+            setUsersToDisplay(users)
+        }
+    }, );
+
+    if (isEmpty === 0) {
     return (
+
         <>
             <div>
-                <Navbar site={'FrontPage'} Logged = {cos}/>
+                <Navbar site={"Register"}/>
             </div>
-            <>
-                <div className="box-width-admin d-flex flex-column align-items-center mx-auto ">
-                    <>
-                        <div className="container-fluid d-flex flex-column align-items-center">
-                            <div className="row row col-11 py-3">
-                                <div className="col-3 fs-2">Date of registration</div>
+            <div className="col-12 mt-5"  style={{ justifyContent: 'flex-center' }}>
+                <div className="container-fluid d-flex flex-column align-items-center">
+                    <div className="row row col-10 py-3">
+                        <div className="container-fluid d-flex flex-column ">
+                            <div className="row visit-box mt-1">
                                 <div className="col-3 fs-2">Username</div>
                                 <div className="col-3 fs-2">Email</div>
-                                <div className="col-3 fs-2">Action</div>
+                                <div className="col-3 fs-2">Role</div>
+                                <div className="col-3 fs-2">Set Role</div>
                             </div>
-
-                            {users.map((r)=><UserToVerify user={{...r}} setDisplayDetails={setDisplayDetails} setUser={setUser} key={v4()}/>)}
-                            {users.length===0 &&
-                                <div>Nothing here</div>
-                            }
                         </div>
-                    </>
+                        <div className="overflow-auto" style={{ maxHeight: '75vh' }}>
+                            <UsersComponent users={usersToDisplay}/>
+                        </div>
+                    </div>
                 </div>
-            </>
+            </div>
+
         </>
-    )
+    );}
+    else {
+        return (
+
+            <>
+                <div>
+                    <Navbar site={"Register"}/>
+                </div>
+                <div className="col-12 mt-5"  style={{ justifyContent: 'flex-center' }}>
+                    <div className="container-fluid d-flex flex-column align-items-center">
+                        <div className="row row col-10 py-3">
+                            <div className="container-fluid d-flex flex-column ">
+                                <div className="row visit-box mt-1">
+                                    <div className="col-3 fs-2">Username</div>
+                                    <div className="col-3 fs-2">Email</div>
+                                    <div className="col-3 fs-2">Role</div>
+                                    <div className="col-3 fs-2">Set Role</div>
+                                </div>
+                            </div>
+                                <div className="col-12 fs-2">No unassigned users</div>
+                        </div>
+                    </div>
+                </div>
+
+            </>);
+    }
 }
 
-export default AdminPanel
+export default AdminPanel;

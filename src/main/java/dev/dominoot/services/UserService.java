@@ -310,29 +310,86 @@ public class UserService {
             }
         }
         return "User updated";
-    }}
+    }
 
-//dokonczyc
-//    public String updateUser(UserModel user) {
-//        if (user != null) {
-//            List<Map<String, Object>> users = this.readUsers();
-//            UserModel tempUser = readUser(user.getUsername());
-//            if (user.getPassword() != tempUser.getPassword())
-//            {
-//                return ("Incorrect password");
-//            }
-//            for (int u = 0; u < users.size(); u++)
-//            {
-//                Map<String, Object> userInDB = users.get(u);
-//                if (user.getUsername().equals(userInDB.get("username")) && user.getId() != userInDB.get("id")) {
-//                    return ("This username is taken");
-//                } else if (user.getEmail().equals(userInDB.get("email")) && user.getId() != userInDB.get("id")) {
-//                    return ("This email is in use");
-//                }
-//            }
-//            return ("User updated");
-//        }else {
-//            return ("User not found");
-//        }
-//    }
-//}
+    public String switchRole(UserModel user) {
+        Connection conn = null;
+        try {
+            String url = "jdbc:sqlite:D:/code/manager-of-stable/db/stable.db";
+            conn = DriverManager.getConnection(url);
+            DatabaseMetaData databaseMetaData = conn.getMetaData();
+
+            String updateUser = """
+                    UPDATE users
+                            SET role = ?
+                            WHERE username = ?;
+            """;
+
+            try (PreparedStatement preparedStatement = conn.prepareStatement(updateUser)) {
+
+                System.out.println(user.getUsername());
+
+                    preparedStatement.setInt(1, user.getRole());
+                    preparedStatement.setString(2, user.getUsername());
+                    preparedStatement.executeUpdate();
+
+            } catch (SQLException e) {
+                // Handle SQLException, log or rethrow as needed
+                e.printStackTrace();
+            }
+            //test
+            System.out.println("Connection to SQLite has been established.");
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        return "User updated";
+    }
+
+    public UserModel readUnassignedUsers() {
+        Connection conn = null;
+        ResultSet resultSet = null;
+        UserModel user = new UserModel();
+        try {
+            String url = "jdbc:sqlite:D:/code/manager-of-stable/db/stable.db";
+            conn = DriverManager.getConnection(url);
+            DatabaseMetaData databaseMetaData = conn.getMetaData();
+            PreparedStatement preparedStatement = null;
+            String sql = "SELECT * FROM users WHERE role=5";
+            preparedStatement = conn.prepareStatement(sql);
+
+            try (Statement stmt = conn.createStatement();
+                 ResultSet rs = preparedStatement.executeQuery()) {
+
+                user.setId(rs.getInt("id"));
+                user.setEmail(rs.getString("email"));
+                user.setUsername(rs.getString("username"));
+                rs.close();
+                return user;
+
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+                return null;
+            } finally {
+                try {
+                    if (conn != null) {
+                        conn.close();
+                    }
+                } catch (SQLException ex) {
+                    System.out.println(ex.getMessage());
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+}
