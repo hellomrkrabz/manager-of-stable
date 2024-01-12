@@ -3,7 +3,6 @@ import { v4 } from "uuid";
 
 function HorsesComponent(props)
 {
-    console.log("kunie "+props.horses.length);
     return(
         <>
             <div className="container-fluid">

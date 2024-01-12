@@ -1,20 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "./../components/navbar"
-//import ProfileComponent from "../components/ProfileComponent";
-//import EditProfile from "../components/EditProfile";
 import axios from "axios"
-import findCookie from "../scripts/cookie";
 import TextField from "@mui/material/TextField";
 import Button from "react-bootstrap/Button";
 import Popup from "reactjs-popup";
 import def from "../media/horsie.jpg";
-import VisitComponent from "../components/VisitComponent";
-import Dropdown from 'react-bootstrap/Dropdown';
-import {encode as base64_encode} from "base-64";
 import InputLabel from "@mui/material/InputLabel";
-import HorsesComponent from "../components/HorsesComponent";
 import VisitsComponent from "../components/VisitsComponent";
-import horses from "./Horses";
 import getCookie from "../scripts/cookie";
 
 var roleKey = Number(getCookie("roleKey"));
@@ -26,8 +18,7 @@ function getIdFromLink()
 
 function HorseProfile(props) {
 
-    const [isEditing, setIsEditing] = useState(false)
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
+
     const [horse, setHorse] = useState({username:"", birthday:""})
     const [name, setName] = useState("")
     const [birthday, setBirthday] = useState("")
@@ -38,8 +29,6 @@ function HorseProfile(props) {
     const [otherDetails, setOtherDetails] = useState("")
     const [id, setId] = useState("")
     const [avatar, setAvatar] = useState(def);
-    var sessionUserUsername = findCookie("sessionUserUsername")
-    var sessionUserKey = findCookie("sessionUserKey")
     const [visits, setVisits] = useState([])
     const [valueOfPopup, setPopup] = useState("");
     const [open, setOpen] = useState(false);
@@ -115,7 +104,6 @@ function HorseProfile(props) {
         if(visits!==undefined && visits.length > 0)
         {
             let noe=20;
-            //let offset=pageNumber*noe;
             setVisitsToDisplay(visits)
         }
     }, );

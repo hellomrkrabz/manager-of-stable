@@ -18,11 +18,9 @@ const HorseComponent = ({ details, setDetails, setDisplayDetails }) => {
                 </div>
                 <div className="flex-grow-1 d-flex px-3 pt-3">
                     <p className="col-9 overflow-hidden" style={{height: "70px",}}>{dietaryDescription}</p>
-                    {/*<div className="col-2 d-flex justify-content-end align-items-end align-self-bottom flex-grow-1">*/}
                     <Button variant="outline-info" className="submit-button-horse" onClick={() => {handlePageChange()}} id="submit" name="submit">Profile</Button>
                     </div>
                 </div>
-            {/*</div>*/}
         </>
     );
 };

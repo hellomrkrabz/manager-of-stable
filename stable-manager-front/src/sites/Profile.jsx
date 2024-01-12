@@ -4,15 +4,12 @@ import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import Navbar from "../components/navbar";
 import TextField from "@mui/material/TextField"
-import Logo from "../components/logo";
 import Button from "react-bootstrap/Button";
-import {z} from "zod";
 import getCookie from "../scripts/cookie";
 import InputLabel from '@mui/material/InputLabel';
 
 function Profile() {
     const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
     const [id, setId] = useState("");

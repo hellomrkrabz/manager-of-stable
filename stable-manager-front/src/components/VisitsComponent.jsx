@@ -1,4 +1,3 @@
-import { v4 } from "uuid";
 import VisitComponent from "./VisitComponent";
 
 function VisitsComponent(props)

@@ -42,8 +42,6 @@ function Register() {
     }
 
     useEffect(() => {
-        // This effect will run whenever valueOfPopup changes
-        // It can be used to trigger any side effects or additional logic
         console.log('valueOfPopup changed:', valueOfPopup);
     }, [valueOfPopup]);
 

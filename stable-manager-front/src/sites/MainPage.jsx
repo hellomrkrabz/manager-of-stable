@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../components/navbar'
-import background from '../media/background.jpg'
-import axios from 'axios'
 import '../MainPage.css'
 import getCookie from "../scripts/cookie";
 

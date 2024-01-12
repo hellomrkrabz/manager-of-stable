@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "./../components/navbar"
 import axios from "axios"
-import findCookie from "../scripts/cookie";
 import TextField from "@mui/material/TextField";
 import Button from "react-bootstrap/Button";
 import Popup from "reactjs-popup";
-import def from "../media/horsie.jpg";
-import VisitComponent from "../components/VisitComponent";
 import Dropdown from 'react-bootstrap/Dropdown';
-import {encode as base64_encode} from "base-64";
-import InputLabel from "@mui/material/InputLabel";
 import { z } from "zod";
 
 function getIdFromLink()

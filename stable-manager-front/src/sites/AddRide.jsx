@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "./../components/navbar"
 import axios from "axios"
-import findCookie from "../scripts/cookie";
 import TextField from "@mui/material/TextField";
 import Button from "react-bootstrap/Button";
-import def from "../media/horsie.jpg";
 import Form from 'react-bootstrap/Form';
 import getCookie from "../scripts/cookie";
 import { z } from "zod";

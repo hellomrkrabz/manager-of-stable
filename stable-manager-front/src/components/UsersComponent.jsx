@@ -1,5 +1,4 @@
 import UserComponent from "./UserComponent"
-import RideComponent from "./RideComponent";
 function UsersComponent(props)
 {
     return(

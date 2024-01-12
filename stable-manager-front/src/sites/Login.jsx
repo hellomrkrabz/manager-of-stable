@@ -4,10 +4,8 @@ import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import Navbar from "../components/navbar";
 import TextField from "@mui/material/TextField"
-import Logo from "../components/logo";
 import Button from "react-bootstrap/Button";
 import {z} from "zod";
-import getCookie from "../scripts/cookie";
 
 
 const schema = z.object({
@@ -39,7 +37,6 @@ function Login() {
             console.log(response.data);
             setOpen(o => !o);
             setPopup(response.data.message);
-            console.log("rispons "+response.data.message);
             if(response.data.message === "Logged in")
             {
                 document.cookie = "sessionUserKey="+response.data.id+"; SameSite=None; Secure";
@@ -59,7 +56,6 @@ function Login() {
         axios.get(url)
             .then((response) => {
                 document.cookie ="roleKey="+response.data.role+"; SameSite=None; Secure";
-                console.log("TA ROLA "+response.data.role)
             }).then(()=> {window.location.replace("/Profile");})
             .catch((error) => {
                 console.error("Error fetching data:", error);

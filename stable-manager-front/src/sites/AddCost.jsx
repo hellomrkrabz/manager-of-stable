@@ -3,7 +3,6 @@ import Navbar from "./../components/navbar"
 import axios from "axios"
 import TextField from "@mui/material/TextField";
 import Button from "react-bootstrap/Button";
-import Form from 'react-bootstrap/Form';
 import getCookie from "../scripts/cookie";
 import { z } from "zod";
 import Popup from "reactjs-popup";
