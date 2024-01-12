@@ -1,23 +1,19 @@
 import React from "react";
-import IconButton from "@mui/material/IconButton"
-import TextField from "@mui/material/TextField";
 import '../horses.css'
 import Button from "react-bootstrap/Button";
 
 const HorseComponent = ({ details, setDetails, setDisplayDetails }) => {
-    // Extract individual properties
     const { name, birthday, image, dietaryDescription, otherDetails, turnoutDescription, id, ownerId } = details;
     const handlePageChange = () => {
         window.location.replace("/HorseProfile/"+id);
     };
     return (
         <>
-            {/*<div className="bg-light rounded-3 d-flex flex-column">*/}
             <div className="horses-box-all d-flex flex-column align-items-left mx-auto ">
-                <div className="bg-banana-blue rounded-top d-flex justify-content-between align-items-center px-2 py-1 fw-semibold">
+                <div className="rounded-top d-flex justify-content-between align-items-center px-2 py-1 fw-semibold">
                     {<p>Name: {name}</p>}
                 </div>
-                <div className="bg-banana-blue rounded-top d-flex justify-content-between align-items-center px-2 py-1 fw-semibold">
+                <div className="rounded-top d-flex justify-content-between align-items-center px-2 py-1 fw-semibold">
                     {<p>Birthday: {birthday}</p>}
                 </div>
                 <div className="flex-grow-1 d-flex px-3 pt-3">

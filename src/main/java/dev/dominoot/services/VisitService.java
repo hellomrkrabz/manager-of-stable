@@ -27,7 +27,7 @@ public class VisitService {
     public String saveVisit(VisitModel visit) {
         Connection conn = null;
         try {
-            String url = "jdbc:sqlite:D:/code/manager-of-stable/db/stable.db";
+            String url = "jdbc:sqlite:db/stable.db";
             conn = DriverManager.getConnection(url);
             DatabaseMetaData databaseMetaData = conn.getMetaData();
 
@@ -68,7 +68,7 @@ public class VisitService {
         Connection conn = null;
         List<Map<String, Object>> visits = new ArrayList<Map<String, Object>>();
         try {
-            String url = "jdbc:sqlite:D:/code/manager-of-stable/db/stable.db";
+            String url = "jdbc:sqlite:db/stable.db";
             conn = DriverManager.getConnection(url);
             DatabaseMetaData databaseMetaData = conn.getMetaData();
 
@@ -119,7 +119,7 @@ public class VisitService {
         ResultSet resultSet = null;
         VisitModel visit = new VisitModel();
         try {
-            String url = "jdbc:sqlite:D:/code/manager-of-stable/db/stable.db";
+            String url = "jdbc:sqlite:db/stable.db";
             conn = DriverManager.getConnection(url);
             DatabaseMetaData databaseMetaData = conn.getMetaData();
             PreparedStatement preparedStatement = null;
@@ -160,7 +160,7 @@ public class VisitService {
         Connection conn = null;
         List<Map<String, Object>> visits = new ArrayList<Map<String, Object>>();
         try {
-            String url = "jdbc:sqlite:D:/code/manager-of-stable/db/stable.db";
+            String url = "jdbc:sqlite:db/stable.db";
             conn = DriverManager.getConnection(url);
             DatabaseMetaData databaseMetaData = conn.getMetaData();
 

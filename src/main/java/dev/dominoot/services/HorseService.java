@@ -47,7 +47,7 @@ public class HorseService {
     public void updateHorseImage(Integer id, String filePath) {
         Connection conn = null;
         try {
-            String url = "jdbc:sqlite:D:/code/manager-of-stable/db/stable.db";
+            String url = "jdbc:sqlite:db/stable.db";
             conn = DriverManager.getConnection(url);
             DatabaseMetaData databaseMetaData = conn.getMetaData();
 
@@ -82,14 +82,13 @@ public class HorseService {
     public String saveHorse(HorseModel horse) {
         Connection conn = null;
         try {
-            String url = "jdbc:sqlite:D:/code/manager-of-stable/db/stable.db";
+            String url = "jdbc:sqlite:db/stable.db";
             conn = DriverManager.getConnection(url);
             DatabaseMetaData databaseMetaData = conn.getMetaData();
 
             String insertUser = """
                     INSERT INTO horses (name, birthday, ownerId, dietaryDescription, turnoutDescription, otherDetails) VALUES (?, ?, ?, ?, ?, ?)
             """;
-            System.out.println("data urodzenia konia: "+ horse.getBirthDate());
 
             try (PreparedStatement preparedStatement = conn.prepareStatement(insertUser)) {
 
@@ -144,7 +143,7 @@ public class HorseService {
         Connection conn = null;
         List<Map<String, Object>> horses = new ArrayList<Map<String, Object>>();
         try {
-            String url = "jdbc:sqlite:D:/code/manager-of-stable/db/stable.db";
+            String url = "jdbc:sqlite:db/stable.db";
             conn = DriverManager.getConnection(url);
             DatabaseMetaData databaseMetaData = conn.getMetaData();
 
@@ -198,7 +197,7 @@ public class HorseService {
             PreparedStatement preparedStatement = null;
 
 
-            String url = "jdbc:sqlite:D:/code/manager-of-stable/db/stable.db";
+            String url = "jdbc:sqlite:db/stable.db";
             conn = DriverManager.getConnection(url);
             DatabaseMetaData databaseMetaData = conn.getMetaData();
 
@@ -266,7 +265,7 @@ public class HorseService {
         ResultSet resultSet = null;
         HorseModel horse = new HorseModel();
         try {
-            String url = "jdbc:sqlite:D:/code/manager-of-stable/db/stable.db";
+            String url = "jdbc:sqlite:db/stable.db";
             conn = DriverManager.getConnection(url);
             DatabaseMetaData databaseMetaData = conn.getMetaData();
             PreparedStatement preparedStatement = null;
@@ -309,7 +308,7 @@ public class HorseService {
     public String updateHorse(HorseModel horse) {
         Connection conn = null;
         try {
-            String url = "jdbc:sqlite:D:/code/manager-of-stable/db/stable.db";
+            String url = "jdbc:sqlite:db/stable.db";
             conn = DriverManager.getConnection(url);
             DatabaseMetaData databaseMetaData = conn.getMetaData();
 

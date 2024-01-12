@@ -1,5 +1,4 @@
 package dev.dominoot.models;
-import java.sql.Date;
 public class VisitModel {
     public Integer getId() {
         return id;

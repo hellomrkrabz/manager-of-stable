@@ -18,7 +18,7 @@ public class CostService {
     public String saveCost(CostModel cost) {
         Connection conn = null;
         try {
-            String url = "jdbc:sqlite:D:/code/manager-of-stable/db/stable.db";
+            String url = "jdbc:sqlite:db/stable.db";
             conn = DriverManager.getConnection(url);
             DatabaseMetaData databaseMetaData = conn.getMetaData();
             String insertCost = """
@@ -60,7 +60,7 @@ public class CostService {
         Connection conn = null;
         List<Map<String, Object>> costs = new ArrayList<Map<String, Object>>();
         try {
-            String url = "jdbc:sqlite:D:/code/manager-of-stable/db/stable.db";
+            String url = "jdbc:sqlite:db/stable.db";
             conn = DriverManager.getConnection(url);
             DatabaseMetaData databaseMetaData = conn.getMetaData();
 

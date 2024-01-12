@@ -30,7 +30,7 @@ public class UserService {
     public String saveUser(UserModel user) {
         Connection conn = null;
         try {
-            String url = "jdbc:sqlite:D:/code/manager-of-stable/db/stable.db";
+            String url = "jdbc:sqlite:db/stable.db";
             conn = DriverManager.getConnection(url);
             DatabaseMetaData databaseMetaData = conn.getMetaData();
 
@@ -84,7 +84,7 @@ public class UserService {
         Connection conn = null;
         List<Map<String, Object>> users = new ArrayList<Map<String, Object>>();
         try {
-            String url = "jdbc:sqlite:D:/code/manager-of-stable/db/stable.db";
+            String url = "jdbc:sqlite:db/stable.db";
             conn = DriverManager.getConnection(url);
             DatabaseMetaData databaseMetaData = conn.getMetaData();
 
@@ -134,7 +134,7 @@ public class UserService {
         Connection conn = null;
         ResultSet resultSet = null;
         try {
-            String url = "jdbc:sqlite:D:/code/manager-of-stable/db/stable.db";
+            String url = "jdbc:sqlite:db/stable.db";
             conn = DriverManager.getConnection(url);
             DatabaseMetaData databaseMetaData = conn.getMetaData();
             PreparedStatement preparedStatement = null;
@@ -172,7 +172,7 @@ public class UserService {
         ResultSet resultSet = null;
         UserModel user = new UserModel();
         try {
-            String url = "jdbc:sqlite:D:/code/manager-of-stable/db/stable.db";
+            String url = "jdbc:sqlite:db/stable.db";
             conn = DriverManager.getConnection(url);
             DatabaseMetaData databaseMetaData = conn.getMetaData();
             PreparedStatement preparedStatement = null;
@@ -213,7 +213,7 @@ public class UserService {
         ResultSet resultSet = null;
         UserModel user = new UserModel();
         try {
-            String url = "jdbc:sqlite:D:/code/manager-of-stable/db/stable.db";
+            String url = "jdbc:sqlite:db/stable.db";
             conn = DriverManager.getConnection(url);
             DatabaseMetaData databaseMetaData = conn.getMetaData();
             PreparedStatement preparedStatement = null;
@@ -293,7 +293,7 @@ public class UserService {
     public String updateUser(UserModel user) {
         Connection conn = null;
         try {
-            String url = "jdbc:sqlite:D:/code/manager-of-stable/db/stable.db";
+            String url = "jdbc:sqlite:db/stable.db";
             conn = DriverManager.getConnection(url);
             DatabaseMetaData databaseMetaData = conn.getMetaData();
 
@@ -310,7 +310,6 @@ public class UserService {
 
                 if (user != null) {
                     List<Map<String, Object>> users = this.readUsers();
-                    System.out.println("ten id: " + user.getId());
                     UserModel tempUser = readUserId(user.getId());
                     if (!user.getPassword().equals(tempUser.getPassword()))
                     {
@@ -357,7 +356,7 @@ public class UserService {
     public String switchRole(UserModel user) {
         Connection conn = null;
         try {
-            String url = "jdbc:sqlite:D:/code/manager-of-stable/db/stable.db";
+            String url = "jdbc:sqlite:db/stable.db";
             conn = DriverManager.getConnection(url);
             DatabaseMetaData databaseMetaData = conn.getMetaData();
 
@@ -401,7 +400,7 @@ public class UserService {
         ResultSet resultSet = null;
         List<Map<String, Object>> users = new ArrayList<Map<String, Object>>();
         try {
-            String url = "jdbc:sqlite:D:/code/manager-of-stable/db/stable.db";
+            String url = "jdbc:sqlite:db/stable.db";
             conn = DriverManager.getConnection(url);
             DatabaseMetaData databaseMetaData = conn.getMetaData();
             PreparedStatement preparedStatement = null;

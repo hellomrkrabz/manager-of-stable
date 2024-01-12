@@ -2,37 +2,25 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../components/navbar";
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
-import banana from "../media/horsie.jpg";
-import FormControl from '@mui/material/FormControl'
-import Select from '@mui/material/Select'
-import MenuItem from '@mui/material/MenuItem'
 import HorsesComponent from "../components/HorsesComponent";
-import Popup from 'reactjs-popup';
-import Textfield from '@mui/material/TextField'
 import axios from "axios"
 import getCookie from "../scripts/cookie";
 import Button from "react-bootstrap/Button";
 
 var roleKey = Number(getCookie("roleKey"));
 var idKey = Number(getCookie("idKey"));
-
-const Search = styled('div')(({ theme }) => ({
+styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
     backgroundColor: alpha(theme.palette.common.white, 0.15),
     '&:hover': {
         backgroundColor: alpha(theme.palette.common.white, 0.25),
     },
-    //marginRight: theme.spacing(2),
-    //marginLeft: 0,
     width: '100%',
     [theme.breakpoints.up('sm')]: {
-        //marginLeft: theme.spacing(3),
-        //width: 'auto',
     },
 }));
-
-const SearchIconWrapper = styled('div')(({ theme }) => ({
+styled('div')(({ theme }) => ({
     padding: theme.spacing(0, 2),
     height: '100%',
     position: 'absolute',
@@ -41,12 +29,10 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
     alignItems: 'center',
     justifyContent: 'center',
 }));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
+styled(InputBase)(({ theme }) => ({
     color: 'inherit',
     '& .MuiInputBase-input': {
         padding: theme.spacing(1, 1, 1, 0),
-        // vertical padding + font size from searchIcon
         paddingLeft: `calc(1em + ${theme.spacing(4)})`,
         transition: theme.transitions.create('width'),
         width: '100%',
@@ -56,17 +42,13 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
-var sessionUsername= getCookie("sessionUserUsername")
-var sessionUserKey= getCookie("sessionUserKey")
-
 function Horses(props) {
 
     const [horses, setHorses] = useState([])
     const [filteredHorses, setFilteredHorses] = useState([])
     const [horsesToDisplay, setHorsesToDisplay] = useState(horses)
-    const [filter, setFilter] = useState({user:"", sort:"newest"})
     const [pageNumber, setPageNumber] = useState(0)
-    const [details ,setDetails] = useState({user:"", date:"", score:0, content:"", opinion_id:-1})
+    const [details ,setDetails] = useState({})
     const [displayDetails, setDisplayDetails] = useState(false)
 
     async function fetchHorses() {
@@ -76,7 +58,7 @@ function Horses(props) {
             setHorses(fetchedHorses);
             setFilteredHorses(fetchedHorses);
         } catch (error) {
-            console.error('Error fetching opinions:', error);
+            console.error('Error:', error);
         }
     }
 
@@ -87,7 +69,7 @@ function Horses(props) {
             setHorses(fetchedHorses);
             setFilteredHorses(fetchedHorses);
         } catch (error) {
-            console.error('Error fetching opinions:', error);
+            console.error('Error:', error);
         }
     }
 

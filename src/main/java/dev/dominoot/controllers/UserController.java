@@ -24,7 +24,6 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<String> createUser(@RequestBody UserModel user) {
-        System.out.println("Received user: " + user);
         String response = userService.saveUser(user);
         return ResponseEntity.ok(response);
     }
@@ -45,7 +44,6 @@ public class UserController {
         String pword = user.getPassword();
         try {
             JSONObject response = userService.validateUser(username, pword);
-            System.out.println(response.toString());
             return ResponseEntity.ok(response.toString());
         } catch (Exception e) {
             e.printStackTrace();

@@ -33,7 +33,7 @@ public class CostController {
             List<Map<String, Object>> costs = costService.readCosts(date);
             return new ResponseEntity<>(costs, HttpStatus.OK);
         } catch (Exception e) {
-            e.printStackTrace();  // Log the exception
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

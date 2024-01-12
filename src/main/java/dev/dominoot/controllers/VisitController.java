@@ -2,7 +2,6 @@ package dev.dominoot.controllers;
 
 import dev.dominoot.models.VisitModel;
 import dev.dominoot.services.VisitService;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +23,6 @@ public class VisitController {
 
     @PostMapping("/add")
     public ResponseEntity<String> createVisit(@RequestBody VisitModel visit) {
-        System.out.println("Received visit: " + visit);
         String response = visitService.saveVisit(visit);
         return ResponseEntity.ok(response);
     }

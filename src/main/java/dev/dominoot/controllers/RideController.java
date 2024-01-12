@@ -33,7 +33,7 @@ public class RideController {
             List<Map<String, Object>> rides = rideService.readRides(date);
             return new ResponseEntity<>(rides, HttpStatus.OK);
         } catch (Exception e) {
-            e.printStackTrace();  // Log the exception
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

@@ -1,9 +1,5 @@
 package dev.dominoot.database;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import java.sql.*;
 
 public class DBManager {
@@ -14,9 +10,7 @@ public class DBManager {
     public void connect() {
         Connection conn = null;
         try {
-            // db parameters
-            String url = "jdbc:sqlite:D:/code/manager-of-stable/db/stable.db";
-            // create a connection to the database
+            String url = "jdbc:sqlite:db/stable.db";
             conn = DriverManager.getConnection(url);
             DatabaseMetaData databaseMetaData = conn.getMetaData();
 
@@ -91,8 +85,6 @@ public class DBManager {
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
             }
-            //test
-            System.out.println("Connection to SQLite has been established.");
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());

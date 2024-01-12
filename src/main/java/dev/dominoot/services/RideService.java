@@ -19,7 +19,7 @@ public class RideService {
     public String saveRide(RideModel ride) {
         Connection conn = null;
         try {
-            String url = "jdbc:sqlite:D:/code/manager-of-stable/db/stable.db";
+            String url = "jdbc:sqlite:db/stable.db";
             conn = DriverManager.getConnection(url);
             DatabaseMetaData databaseMetaData = conn.getMetaData();
             System.out.println("grupa tu: " + ride.getGroupRide());
@@ -63,7 +63,7 @@ public class RideService {
         Connection conn = null;
         List<Map<String, Object>> rides = new ArrayList<Map<String, Object>>();
         try {
-            String url = "jdbc:sqlite:D:/code/manager-of-stable/db/stable.db";
+            String url = "jdbc:sqlite:db/stable.db";
             conn = DriverManager.getConnection(url);
             DatabaseMetaData databaseMetaData = conn.getMetaData();
 

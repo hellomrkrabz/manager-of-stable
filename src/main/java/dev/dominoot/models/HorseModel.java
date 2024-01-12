@@ -1,6 +1,5 @@
 package dev.dominoot.models;
 
-import java.sql.Date;
 
 public class HorseModel {
     public Integer getId() {
