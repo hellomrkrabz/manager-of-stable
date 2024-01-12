@@ -130,6 +130,43 @@ public class UserService {
         return users;
     }
 
+    public Boolean checkIfExists(String username) {
+        Connection conn = null;
+        ResultSet resultSet = null;
+        try {
+            String url = "jdbc:sqlite:D:/code/manager-of-stable/db/stable.db";
+            conn = DriverManager.getConnection(url);
+            DatabaseMetaData databaseMetaData = conn.getMetaData();
+            PreparedStatement preparedStatement = null;
+            String sql = "Select Count(*) > 0 as result FROM users WHERE username = ?";
+            preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setString(1, username);
+
+            try (Statement stmt = conn.createStatement();
+                 ResultSet rs = preparedStatement.executeQuery()) {
+                while(rs.next()){
+                    Boolean exists = rs.getBoolean("result");
+                    return exists;
+                }
+
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+                return null;
+            } finally {
+                try {
+                    if (conn != null) {
+                        conn.close();
+                    }
+                } catch (SQLException ex) {
+                    System.out.println(ex.getMessage());
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
+
     public UserModel readUser(String username) {
         Connection conn = null;
         ResultSet resultSet = null;
@@ -153,7 +190,6 @@ public class UserService {
                     user.setRole(rs.getInt("role"));
                     rs.close();
                     return user;
-                //test
 
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
@@ -224,28 +260,34 @@ public class UserService {
         return jsonObject;
     }
     public JSONObject validateUser(String username, String password) {
-        UserModel user = readUser(username);
-        if (user != null && user.getUsername() != null) {
-            String tempPassword = user.getPassword();
-            System.out.println("rola kurczaki"+user.getRole());
-            if (tempPassword != null && tempPassword.equals(password) && user.getRole() != 0) {
-                JSONObject json = toJSON("Logged in", user);
-                System.out.println(json.toString());
-                return json;
-            }
-            else if (user.getRole().equals(0)){
-                JSONObject json = toJSON("No role assigned!", user);
-                return json;
-            }
-
-            else {
-                JSONObject json = toJSON("Wrong password", user);
-                return json;
-            }
-        }else {
+        UserModel nullUser = new UserModel();
+        nullUser.setId(123123);
+        nullUser.setUsername("nulluser");
+        nullUser.setEmail("null@null.null");
+        nullUser.setPassword("nullnullnull");
+        if (checkIfExists(username)) {
+            UserModel user = readUser(username);
+            if (user != null && user.getUsername() != null) {
+                String tempPassword = user.getPassword();
+                if (tempPassword != null && tempPassword.equals(password) && user.getRole() != 0) {
+                    JSONObject json = toJSON("Logged in", user);
+                    System.out.println(json.toString());
+                    return json;
+                } else if (user.getRole().equals(0)) {
+                    JSONObject json = toJSON("No role assigned!", user);
+                    return json;
+                } else {
+                    JSONObject json = toJSON("Wrong password", user);
+                    return json;
+                }
+            } else {
                 JSONObject json = toJSON("User not found", user);
                 return json;
             }
+        } else {
+            JSONObject json = toJSON("User not found", nullUser);
+            return json;
+        }
     }
 
     public String updateUser(UserModel user) {
@@ -354,10 +396,10 @@ public class UserService {
         return "User updated";
     }
 
-    public UserModel readUnassignedUsers() {
+    public List<Map<String, Object>> readUnassignedUsers() {
         Connection conn = null;
         ResultSet resultSet = null;
-        UserModel user = new UserModel();
+        List<Map<String, Object>> users = new ArrayList<Map<String, Object>>();
         try {
             String url = "jdbc:sqlite:D:/code/manager-of-stable/db/stable.db";
             conn = DriverManager.getConnection(url);
@@ -366,19 +408,29 @@ public class UserService {
             String sql = "SELECT * FROM users WHERE role=5";
             preparedStatement = conn.prepareStatement(sql);
 
+
             try (Statement stmt = conn.createStatement();
-                 ResultSet rs = preparedStatement.executeQuery()) {
+                 ResultSet rs = stmt.executeQuery(sql)) {
+                ResultSetMetaData metaData = rs.getMetaData();
+                int columnCount = metaData.getColumnCount();
 
-                user.setId(rs.getInt("id"));
-                user.setEmail(rs.getString("email"));
-                user.setUsername(rs.getString("username"));
-                rs.close();
-                return user;
+                while (rs.next()) {
+                    Map<String, Object> user = new HashMap<>();
 
+                    for (int i = 1; i <= columnCount; i++) {
+                        String columnName = metaData.getColumnName(i);
+                        Object columnValue = rs.getObject(i);
+                        user.put(columnName, columnValue);
+                    }
+
+                    users.add(user);
+                }
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
-                return null;
-            } finally {
+                // Handle SQLException, log or rethrow as needed
+                e.printStackTrace();
+            }
+
+            finally {
                 try {
                     if (conn != null) {
                         conn.close();
@@ -390,6 +442,7 @@ public class UserService {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return users;
     }
 
 }

@@ -12,6 +12,7 @@ function UserComponent(props) {
             username: props.details.username,
             role: userRole
         }).then((response) => {
+            window.location.reload();
         })
     }
 

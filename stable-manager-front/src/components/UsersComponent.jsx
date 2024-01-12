@@ -5,7 +5,7 @@ function UsersComponent(props)
     return(
         <>
             <div className="container-fluid overflow-auto">
-                {props.users.length > 0 && props.users.map((o)=>
+                {props.users.length > 0 && props.users[0].map((o)=>
                     <UserComponent details={o}/>
                 )}
                 {props.users.length === 0 &&

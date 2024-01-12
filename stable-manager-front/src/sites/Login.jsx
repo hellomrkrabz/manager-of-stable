@@ -32,7 +32,6 @@ function Login() {
 
     function submit() {
         const url = "http://localhost:8080/api/"+username;
-        console.log(password);
         axios.post(url, {
             username: username,
             password: password
@@ -40,13 +39,17 @@ function Login() {
             console.log(response.data);
             setOpen(o => !o);
             setPopup(response.data.message);
+            console.log("rispons "+response.data.message);
             if(response.data.message === "Logged in")
             {
-                window.location.replace("/Profile");
                 document.cookie = "sessionUserKey="+response.data.id+"; SameSite=None; Secure";
                 document.cookie = "usernameKey="+username+"; SameSite=None; Secure";
                 document.cookie ="idKey="+response.data.id+"; SameSite=None; Secure";
                 getRoleOfUser();
+            }
+            else
+            {
+
             }
         });
     }
@@ -57,7 +60,7 @@ function Login() {
             .then((response) => {
                 document.cookie ="roleKey="+response.data.role+"; SameSite=None; Secure";
                 console.log("TA ROLA "+response.data.role)
-            })
+            }).then(()=> {window.location.replace("/Profile");})
             .catch((error) => {
                 console.error("Error fetching data:", error);
             });

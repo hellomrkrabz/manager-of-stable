@@ -136,7 +136,7 @@ function HorseProfile(props) {
         const handlePageChange = () => {
             window.location.replace("/AddVisit/"+getIdFromLink());
         };
-    if (roleKey === 3) {
+    if (roleKey === 3 || roleKey === 1) {
 if (changingDetails===false) {
     return (
 
@@ -241,7 +241,7 @@ else {
         </>
     );}
 }
-    else if(roleKey === 1 || roleKey === 4){
+    else if(roleKey === 4){
         return (
 
             <>

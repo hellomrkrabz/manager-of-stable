@@ -88,10 +88,10 @@ public class UserController {
     }
 
     @GetMapping("/unassignedUsers")
-    public ResponseEntity<UserModel> getUnassignedUsers() {
+    public ResponseEntity<List<Map<String, Object>>> getUnassignedUsers() {
         try {
-            UserModel user = userService.readUnassignedUsers();
-            return new ResponseEntity<>(user, HttpStatus.OK);
+            List<Map<String, Object>> users = userService.readUnassignedUsers();
+            return new ResponseEntity<>(users, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();  // Log the exception
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
